@@ -1,0 +1,17 @@
+.vscode/
+.vs/
+*.code-workspace
+*.suo
+*.user
+*.userosscache
+*.rsuser
+*.sln.ide/
+
+bin/
+obj/
+debug/
+release/
+publish/
+x64/
+x86/
+artifacts/
