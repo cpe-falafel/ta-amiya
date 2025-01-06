@@ -71,7 +71,7 @@ jobs:
         shell: powershell
         working-directory: ./WorkerApi/WorkerApiTests
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cpe-falafel_ta-amiya" /o:"cpe-falafel" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cpe-falafel_ta-amiya" /o:"cpe-falafel" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           dotnet build --no-incremental
           .\.sonar\coverage\dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
