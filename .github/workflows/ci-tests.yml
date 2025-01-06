@@ -50,7 +50,6 @@ jobs:
         run: |
           dotnet tool install --global JetBrains.dotCover.GlobalTool
 
-
       - name: Build, test, cover, analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,7 +57,7 @@ jobs:
         shell: powershell
         working-directory: ./WorkerApi/WorkerApiTests
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cpe-falafel_ta-amiya" /o:"cpe-falafel" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
-          dotnet build –no-incremental
-          dotnet dotcover test --dcReportType=HTML
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cpe-falafel_ta-amiya" /o:"cpe-falafel" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths="dotCover.Output.html"
+          dotnet build --no-incremental
+          dotnet dotcover test --dcReportType=HTML --dcReportPath=dotCover.Output.html
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
