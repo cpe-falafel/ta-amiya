@@ -12,7 +12,7 @@ namespace WorkerApi.Models.Filters
 
         public override string[] InStreams { get; } = [];
 
-        private string? src;
+        private readonly string? src;
 
         public override object[] GetFilterParams()
         {

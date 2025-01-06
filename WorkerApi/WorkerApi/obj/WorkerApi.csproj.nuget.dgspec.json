@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj": {}
+    "C:\\Users\\dojos\\Source\\Repos\\cpe-falafel\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj": {}
   },
   "projects": {
-    "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj": {
+    "C:\\Users\\dojos\\Source\\Repos\\cpe-falafel\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
+        "projectUniqueName": "C:\\Users\\dojos\\Source\\Repos\\cpe-falafel\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
         "projectName": "WorkerApi",
-        "projectPath": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
-        "packagesPath": "C:\\Users\\eliot\\.nuget\\packages\\",
-        "outputPath": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\obj\\",
+        "projectPath": "C:\\Users\\dojos\\Source\\Repos\\cpe-falafel\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
+        "packagesPath": "C:\\Users\\dojos\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dojos\\Source\\Repos\\cpe-falafel\\ta-amiya\\WorkerApi\\WorkerApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\eliot\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dojos\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -50,6 +50,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "QuickGraph": {
+              "target": "Package",
+              "version": "[3.6.61119.7, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"

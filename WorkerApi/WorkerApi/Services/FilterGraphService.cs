@@ -6,9 +6,9 @@ namespace WorkerApi.Services
 {
     public class FilterGraphService : IFilterGraphService
     {
-        private readonly ILogger<IFilterGraphService> _logger;
+        private readonly ILogger<FilterGraphService> _logger;
 
-        public FilterGraphService(ILogger<IFilterGraphService> logger)
+        public FilterGraphService(ILogger<FilterGraphService> logger)
         {
             _logger = logger;
         }
@@ -31,9 +31,8 @@ namespace WorkerApi.Services
 
         private void AddStreams(BidirectionalGraph<FilterVertex, StreamEdge> graph, Dictionary<string, StreamGraphItem> streamDict)
         {
-            foreach (KeyValuePair<string, StreamGraphItem> itemKv in streamDict)
+            foreach (StreamGraphItem item in streamDict.Select(kv => kv.Value))
             {
-                StreamGraphItem item = itemKv.Value;
                 FilterVertex? inVertex = graph.Vertices.FirstOrDefault(v => v.Key.Equals(item.InKey), null);
                 FilterVertex? outVertex = graph.Vertices.FirstOrDefault(v => v.Key.Equals(item.OutKey), null);
                 if (inVertex == null || outVertex == null)

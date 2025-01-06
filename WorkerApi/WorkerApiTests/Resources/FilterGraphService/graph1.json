@@ -3,7 +3,9 @@
         "type": "_IN",
         "in": [],
         "out": [ "stream_1" ],
-        "properties": {}
+        "properties": {
+            "src":  "rtmp://localhost/mystream1"
+        }
     },
     "filter1": {
         "type": "drawbox",
@@ -15,6 +17,8 @@
         "type": "_OUT",
         "in": [ "stream_2" ],
         "out": [],
-        "properties": {}
+        "properties": {
+            "dst": "rtmp://localhost/mystream2"
+        }
     }
 }
