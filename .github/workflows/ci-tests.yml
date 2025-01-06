@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-  
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -18,6 +17,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '8.0.x'
+
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./WorkerApi/WorkerApiTests
@@ -27,28 +27,38 @@ jobs:
       working-directory: ./WorkerApi/WorkerApiTests
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
       working-directory: ./WorkerApi/WorkerApiTests
-  
-  
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: ./WorkerApi/WorkerApiTests/TestResults/**/*.trx
+
   analyze:
     name: Build and analyze
     runs-on: windows-latest
+    needs: test
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available.
-      - uses: actions/checkout@v4
+          distribution: 'zulu'
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
+
       - name: Cache SonarQube Cloud packages
         uses: actions/cache@v4
         with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
       - name: Cache SonarQube Cloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v4
@@ -56,6 +66,7 @@ jobs:
           path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
+
       - name: Install SonarQube Cloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: powershell
@@ -63,15 +74,20 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-          dotnet tool install dotnet-coverage --tool-path .\.sonar\coverage
+
+      - name: Download test results
+        uses: actions/download-artifact@v2
+        with:
+          name: test-results
+          path: ./WorkerApi/WorkerApiTests/TestResults
+
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         working-directory: ./WorkerApi/WorkerApiTests
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cpe-falafel_ta-amiya" /o:"cpe-falafel" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cpe-falafel_ta-amiya" /o:"cpe-falafel" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build --no-incremental
-          .\.sonar\coverage\dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.vstest.reportsPaths="TestResults/**/*.trx"
