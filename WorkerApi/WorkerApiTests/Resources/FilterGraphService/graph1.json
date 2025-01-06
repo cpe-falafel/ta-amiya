@@ -1,0 +1,20 @@
+{
+    "in1": {
+        "type": "_IN",
+        "in": [],
+        "out": [ "stream_1" ],
+        "properties": {}
+    },
+    "filter1": {
+        "type": "drawbox",
+        "in": [ "stream_1" ],
+        "out": [ "stream_2" ],
+        "properties": {}
+    },
+    "out1": {
+        "type": "_OUT",
+        "in": [ "stream_2" ],
+        "out": [],
+        "properties": {}
+    }
+}
