@@ -7,13 +7,17 @@ namespace WorkerApi.Services
 {
     class FilterVertexFactory
     {
-        public static FilterVertex GenerateFilterVertex(string key, FilterGraphItem item) {
+        public static FilterVertex? GenerateFilterVertex(string key, FilterGraphItem item) {
             switch (item.Type)
             {
                 case "drawbox":
                     return new DrawboxFilter(key, item);
+                case "_IN":
+                    return new InFilter(key, item);
+                case "_OUT":
+                    return new OutFilter(key, item);
                 default:
-                    return null!;
+                    return null;
             }
         }
     }

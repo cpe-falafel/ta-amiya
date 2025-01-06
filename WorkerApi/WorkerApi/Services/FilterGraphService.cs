@@ -4,11 +4,11 @@ using WorkerApi.Models.Graph;
 
 namespace WorkerApi.Services
 {
-    public class FilterGraphService
+    public class FilterGraphService : IFilterGraphService
     {
-        private readonly ILogger<FilterGraphService> _logger;
+        private readonly ILogger<IFilterGraphService> _logger;
 
-        public FilterGraphService(ILogger<FilterGraphService> logger)
+        public FilterGraphService(ILogger<IFilterGraphService> logger)
         {
             _logger = logger;
         }
@@ -57,7 +57,7 @@ namespace WorkerApi.Services
                     if (streamDict.TryAdd(streamName, new StreamGraphItem("s" + count.ToString()))) { count++; }
                     StreamGraphItem? item = null;
                     if (streamDict.TryGetValue(streamName, out item)) { 
-                        item.OutKey = itemKv.Key;
+                        item.InKey = itemKv.Key;
                         outRealNames.Add(item.Name);
                     };
                 }
@@ -69,15 +69,18 @@ namespace WorkerApi.Services
                     StreamGraphItem? item = null;
                     if (streamDict.TryGetValue(streamName, out item))
                     {
-                        item.InKey = itemKv.Key;
+                        item.OutKey = itemKv.Key;
                         inRealNames.Add(item.Name);
                     };
                 }
-                graph.AddVertex(FilterVertexFactory.GenerateFilterVertex(itemKv.Key, new FilterGraphItem()
+                FilterVertex? filterVertex = FilterVertexFactory.GenerateFilterVertex(itemKv.Key, new FilterGraphItem()
                 {
-                    In = inRealNames, Out = outRealNames,
-                    Properties = itemKv.Value.Properties, Type = itemKv.Value.Type
-                }));
+                    In = inRealNames,
+                    Out = outRealNames,
+                    Properties = itemKv.Value.Properties,
+                    Type = itemKv.Value.Type
+                });
+                if (filterVertex != null) { graph.AddVertex(filterVertex); }
             }
             return streamDict;
         }
