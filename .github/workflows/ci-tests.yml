@@ -36,14 +36,20 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
-      - name: Install SonarQube Cloud scanner (local) & dotcover (global)
+      - name: Install SonarQube Cloud scanner (local)
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: powershell
         working-directory: ./WorkerApi/WorkerApiTests
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+
+      - name: Install dotCover (global)
+        shell: powershell
+        working-directory: ./WorkerApi/WorkerApiTests
+        run: |
           dotnet tool install --global JetBrains.dotCover.GlobalTool
+
 
       - name: Build, test, cover, analyze
         env:
