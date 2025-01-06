@@ -31,7 +31,7 @@ jobs:
       working-directory: ./WorkerApi/WorkerApiTests
 
     - name: Upload test results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: ./WorkerApi/WorkerApiTests/TestResults/**/*.trx
@@ -76,7 +76,7 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
       - name: Download test results
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: test-results
           path: ./WorkerApi/WorkerApiTests/TestResults
