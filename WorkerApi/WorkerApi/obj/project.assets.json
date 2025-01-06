@@ -26,6 +26,50 @@
           }
         }
       },
+      "Newtonsoft.Json/13.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "QuickGraph/3.6.61119.7": {
+        "type": "package",
+        "compile": {
+          "lib/net4/QuickGraph.Data.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.Graphviz.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.Serialization.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.dll": {
+            "related": ".Data.XML;.Graphviz.XML;.Serialization.XML;.XML"
+          }
+        },
+        "runtime": {
+          "lib/net4/QuickGraph.Data.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.Graphviz.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.Serialization.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.dll": {
+            "related": ".Data.XML;.Graphviz.XML;.Serialization.XML;.XML"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/6.4.0": {
         "type": "package",
         "dependencies": {
@@ -340,6 +384,59 @@
         "microsoft.openapi.nuspec"
       ]
     },
+    "Newtonsoft.Json/13.0.3": {
+      "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "QuickGraph/3.6.61119.7": {
+      "sha512": "crtYNiFcYFtYbmbEfdYsdGw5M3923OO5ZZD25K+WeLPgTp/q4oq3U/FVrbaOK5+Jg8UJDmoZ6sqAVion4RgXCA==",
+      "type": "package",
+      "path": "quickgraph/3.6.61119.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net4/CodeContracts/QuickGraph.Contracts.dll",
+        "lib/net4/CodeContracts/QuickGraph.Data.Contracts.dll",
+        "lib/net4/CodeContracts/QuickGraph.Graphviz.Contracts.dll",
+        "lib/net4/CodeContracts/QuickGraph.Serialization.Contracts.dll",
+        "lib/net4/QuickGraph.Data.XML",
+        "lib/net4/QuickGraph.Data.dll",
+        "lib/net4/QuickGraph.Graphviz.XML",
+        "lib/net4/QuickGraph.Graphviz.dll",
+        "lib/net4/QuickGraph.Serialization.XML",
+        "lib/net4/QuickGraph.Serialization.dll",
+        "lib/net4/QuickGraph.XML",
+        "lib/net4/QuickGraph.dll",
+        "quickgraph.3.6.61119.7.nupkg.sha512",
+        "quickgraph.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore/6.4.0": {
       "sha512": "eUBr4TW0up6oKDA5Xwkul289uqSMgY0xGN4pnbOIBqCcN9VKGGaPvHX3vWaG/hvocfGDP+MGzMA0bBBKz2fkmQ==",
       "type": "package",
@@ -424,27 +521,29 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Newtonsoft.Json >= 13.0.3",
+      "QuickGraph >= 3.6.61119.7",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\eliot\\.nuget\\packages\\": {},
+    "C:\\Users\\dojos\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
+      "projectUniqueName": "C:\\Users\\dojos\\Source\\Repos\\cpe-falafel\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
       "projectName": "WorkerApi",
-      "projectPath": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
-      "packagesPath": "C:\\Users\\eliot\\.nuget\\packages\\",
-      "outputPath": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\obj\\",
+      "projectPath": "C:\\Users\\dojos\\Source\\Repos\\cpe-falafel\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
+      "packagesPath": "C:\\Users\\dojos\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dojos\\Source\\Repos\\cpe-falafel\\ta-amiya\\WorkerApi\\WorkerApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\eliot\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dojos\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -477,6 +576,14 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.3, )"
+          },
+          "QuickGraph": {
+            "target": "Package",
+            "version": "[3.6.61119.7, )"
+          },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
             "version": "[6.4.0, )"
@@ -504,5 +611,17 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Le package 'QuickGraph 3.6.61119.7' a été restauré en utilisant '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' au lieu du framework cible du projet 'net8.0'. Ce package n'est peut-être pas totalement compatible avec votre projet.",
+      "libraryId": "QuickGraph",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }
