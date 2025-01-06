@@ -36,7 +36,7 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
-      - name: Install SonarQube Cloud scanner
+      - name: Install SonarQube Cloud scanner (local) & dotcover (global)
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: powershell
         working-directory: ./WorkerApi/WorkerApiTests
