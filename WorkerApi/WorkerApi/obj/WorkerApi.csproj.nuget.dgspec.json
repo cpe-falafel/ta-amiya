@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj": {}
+    "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj": {}
   },
   "projects": {
-    "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj": {
+    "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
+        "projectUniqueName": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
         "projectName": "WorkerApi",
-        "projectPath": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
+        "projectPath": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\WorkerApi.csproj",
         "packagesPath": "C:\\Users\\eliot\\.nuget\\packages\\",
-        "outputPath": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\obj\\",
+        "outputPath": "C:\\Data\\Mes Documents\\Cours\\Ecole_Inge\\Cours\\Semestre_9\\Projet_final\\Worker\\ta-amiya\\WorkerApi\\WorkerApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.21.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
