@@ -19,7 +19,15 @@ namespace WorkerApi.Services
                 var graph = _filterGraphService.ConvertToGraph(jsonWorkerConfiguration);
                 var command = new StringBuilder("ffmpeg");
 
-                var test = graph;
+                var filters = graph.Vertices.Where(v => v.FilterName != "_IN" && v.FilterName != "_OUT").ToList();
+
+                // Parcours du graph pour construire la commande :
+                foreach (var filter in filters)
+                {
+                    var test = filter;
+                    var name = filter.FilterName;
+                }
+
 
                 return command.ToString();
             }

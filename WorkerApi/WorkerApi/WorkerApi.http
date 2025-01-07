@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:32777
+@WorkerApi_HostAddress = https://localhost:32779
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
