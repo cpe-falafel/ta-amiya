@@ -7,6 +7,11 @@ namespace WorkerApi.Services
         private Process _ffmpegProcess;
         private readonly ILogger<FfmpegRunnerService> _logger;
 
+        public FfmpegRunnerService(ILogger<FfmpegRunnerService> logger)
+        {
+            _logger = logger;
+        }
+
         public async Task RunFfmpegCommandAsync(string ffmpegCommand)
         {
             StopFfmpegCommand(); // Stop any running FFmpeg process

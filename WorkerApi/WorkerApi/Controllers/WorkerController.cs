@@ -10,9 +10,11 @@ namespace WorkerApi.Controllers
     public class WorkerController : ControllerBase
     {
         private readonly ICommandBuildService _commandBuildService;
-        public WorkerController(ICommandBuildService commandBuildService)
+        private readonly FfmpegRunnerService _ffmpegRunnerService;
+        public WorkerController(ICommandBuildService commandBuildService, FfmpegRunnerService ffmpegRunnerService)
         {
             _commandBuildService = commandBuildService;
+            _ffmpegRunnerService = ffmpegRunnerService;
         }
 
         [HttpGet]
@@ -21,13 +23,21 @@ namespace WorkerApi.Controllers
             return Ok("Worker API is running");
         }
 
-        [HttpPost(Name = "GetConfiguration")]
-        public IActionResult GetConfiguration([FromBody] UpdateWorkerConfigurationDto updateWorkerConfigurationDto)
+        [HttpPost(Name = "UpdateWorkerConfiguration")]
+        public IActionResult UpdateWorkerConfiguration([FromBody] UpdateWorkerConfigurationDto updateWorkerConfigurationDto)
         {
             try
             {
                 var command = _commandBuildService.BuildCommand(updateWorkerConfigurationDto.JsonWorkerConfiguration);
-                return Ok(command);
+                //var commandTest = "ffmpeg -i rtmp://localhost:1935/live/test -c copy -f flv rtmp://localhost:1935/input/test\r\n";
+
+                // run ffmpeg command :
+                if (command != null)
+                {
+                    _ffmpegRunnerService.RunFfmpegCommandAsync(command);
+                }
+
+                return Ok();
             }
             catch (Exception ex)
             {
