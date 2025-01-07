@@ -1,0 +1,14 @@
+{
+    "in1": {
+        "type": "_IN",
+        "in": [],
+        "out": [ "stream_1" ],
+        "properties": {}
+    },
+    "out1": {
+        "type": "_OUT",
+        "in": [ "stream_2" ],
+        "out": [],
+        "properties": {}
+    }
+}

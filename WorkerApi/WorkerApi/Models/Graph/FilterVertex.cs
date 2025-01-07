@@ -5,7 +5,8 @@
     {
         
         public string Key { get; }
-        public FilterVertex(String key)
+        
+        protected FilterVertex(String key)
         {
             Key = key;
         }
