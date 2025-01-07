@@ -1,29 +1,37 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WorkerApi.Models.DTO;
+using WorkerApi.Services;
 
 namespace WorkerApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class WorkerController : ControllerBase
     {
-        public WorkerController()
+        private readonly ICommandBuildService _commandBuildService;
+        public WorkerController(ICommandBuildService commandBuildService)
         {
+            _commandBuildService = commandBuildService;
         }
 
         [HttpGet]
-        // Get json configuration : return Json object
-        public IActionResult GetConfiguration()
+        public IActionResult Get()
         {
-            var result = false;
+            return Ok("Worker API is running");
+        }
 
-            if (result)
+        [HttpPost(Name = "GetConfiguration")]
+        public IActionResult GetConfiguration([FromBody] UpdateWorkerConfigurationDto updateWorkerConfigurationDto)
+        {
+            try
             {
-                return Ok(new { result = "success" });
+                var command = _commandBuildService.BuildCommand(updateWorkerConfigurationDto.JsonWorkerConfiguration);
+                return Ok(command);
             }
-            else
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { result = "error" });
+                return BadRequest(new { error = ex.Message });
             }
         }
     }
