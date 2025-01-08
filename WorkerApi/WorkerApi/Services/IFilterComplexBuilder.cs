@@ -1,9 +1,13 @@
-﻿using WorkerApi.Models.Graph;
+﻿using WorkerApi.Models.Filters;
+using WorkerApi.Models.Graph;
 
 namespace WorkerApi.Services
 {
     public interface IFilterComplexBuilder
     {
-        void AddFilter(FilterVertex filter);
+        void AddInput(FilterVertex input);
+        void AddFilter(AbstractFilterComplexVertex filter);
+        void AddOutput(FilterVertex output);
+        string BuildFilterComplex();
     }
 }
