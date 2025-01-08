@@ -1,4 +1,7 @@
-﻿using WorkerApi.Models.Filters;
+﻿using QuickGraph;
+using WorkerApi.Models;
+using WorkerApi.Models.Filters;
+using WorkerApi.Models.Graph;
 
 namespace WorkerApi.Services
 {
@@ -15,40 +18,62 @@ namespace WorkerApi.Services
             _filterComplexBuilder = filterComplexBuilder;
         }
 
-        public string BuildCommand(string jsonWorkerConfiguration)
+        private List<T> CastWhere<T>(List<FilterVertex> vertices) where T : FilterVertex
+        {
+            return vertices.Where(v => v is T).Select(v => (T)v).ToList();
+        }
+
+        public VideoCommand BuildCommand(string jsonWorkerConfiguration)
         {
             try
             {
+                var cmd = new VideoCommand();
                 var graph = _filterGraphService.ConvertToGraph(jsonWorkerConfiguration);
 
-                // Traitement des entrées
-                var inputNodes = graph.Vertices.Where(v => v.FilterName == "_IN").ToList();
-                foreach (var inputNode in inputNodes)
-                {
-                    _filterComplexBuilder.AddInput(inputNode);
-                }
+                AddInputs(cmd, graph);
 
-                // Traitement des filtres
-                var filterComplexes = graph.Vertices.Where(v => v is AbstractFilterComplexVertex).Select(v => (AbstractFilterComplexVertex)v).ToList();
-                foreach (var filter in filterComplexes)
-                {
-                    _filterComplexBuilder.AddFilter(filter);
-                }
+                AddFilters(cmd, graph);
 
-                // Traitement des sorties
-                var outputNodes = graph.Vertices.Where(v => v.FilterName == "_OUT").ToList();
-                foreach (var outputNode in outputNodes)
-                {
-                    _filterComplexBuilder.AddOutput(outputNode);
-                }
+                AddOutputs(cmd, graph);
 
-                // Construction de la commande finale
-                return "ffmpeg" + _filterComplexBuilder.BuildFilterComplex();
+                return cmd;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error building ffmpeg command");
                 throw;
+            }
+        }
+
+        private void AddFilters(VideoCommand cmd, BidirectionalGraph<FilterVertex, StreamEdge> graph)
+        {
+            var filterComplexes = CastWhere<AbstractFilterComplexVertex>(graph.Vertices.ToList());
+            foreach (var filter in filterComplexes)
+            {
+                _filterComplexBuilder.AddFilter(filter);
+            }
+            cmd.Args.Append(" -filter_complex");
+            cmd.Args.Append(" \"$AMIYA_FC\"");
+            cmd.Env.Add("AMIYA_FC", _filterComplexBuilder.BuildFilterComplex());
+        }
+
+        private void AddInputs(VideoCommand cmd, BidirectionalGraph<FilterVertex, StreamEdge> graph)
+        {
+            int inCount = 0;
+            foreach (var inputNode in CastWhere<InFilter>(graph.Vertices.ToList()))
+            {
+                inputNode.AddInput(inCount, cmd);
+                inCount++;
+            }
+        }
+
+        private void AddOutputs(VideoCommand cmd, BidirectionalGraph<FilterVertex, StreamEdge> graph)
+        {
+            int outCount = 0;
+            foreach (var inputNode in CastWhere<OutFilter>(graph.Vertices.ToList()))
+            {
+                inputNode.AddOutput(outCount, cmd);
+                outCount++;
             }
         }
     }

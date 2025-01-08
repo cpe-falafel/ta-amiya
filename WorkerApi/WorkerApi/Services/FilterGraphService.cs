@@ -13,7 +13,6 @@ namespace WorkerApi.Services
             _logger = logger;
         }
 
-
         public BidirectionalGraph<FilterVertex, StreamEdge> ConvertToGraph(string json) {
             Dictionary<string, FilterGraphItem>? filterDict = JsonConvert.DeserializeObject<Dictionary<string, FilterGraphItem>>(json);
 
