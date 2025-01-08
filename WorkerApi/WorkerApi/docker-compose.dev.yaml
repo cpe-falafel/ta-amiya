@@ -1,0 +1,14 @@
+﻿version: '3.8'
+
+services:
+  liveserver:
+    image: tiangolo/nginx-rtmp:latest-2024-12-02
+    container_name: liveserver
+    networks:
+      - worker_dev
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+networks:
+  worker_dev:
+    external: true

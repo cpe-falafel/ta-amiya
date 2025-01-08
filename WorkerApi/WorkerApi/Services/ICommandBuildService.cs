@@ -1,7 +1,9 @@
-﻿namespace WorkerApi.Services
+﻿using WorkerApi.Models;
+
+namespace WorkerApi.Services
 {
     public interface ICommandBuildService
     {
-        string BuildCommand(string jsonWorkerConfiguration);
+        VideoCommand BuildCommand(string jsonWorkerConfiguration);
     }
 }

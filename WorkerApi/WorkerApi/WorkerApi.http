@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:32787
+@WorkerApi_HostAddress = https://localhost:32768
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -7,9 +7,7 @@ Accept: application/json
 POST {{WorkerApi_HostAddress}}/worker/
 Accept: application/json
 Content-Type: application/json
-{
-    "jsonWorkerConfiguration": "{\"in1\":{\"type\":\"_IN\",\"in\":[],\"out\":[\"stream_1\"],\"properties\":{\"src\":\"http\"}},\"filter1\":{\"type\":\"drawbox\",\"in\":[\"stream_1\"],\"out\":[\"stream_2\"],\"properties\":{}},\"out1\":{\"type\":\"_OUT\",\"in\":[\"stream_2\"],\"out\":[],\"properties\":{}}}"
-}
+{"jsonWorkerConfiguration":"{\"in1\":{\"type\":\"_IN\",\"in\":[],\"out\":[\"stream_v1\",\"stream_a2\"],\"properties\":{\"src\":\"rtmp://localhost/mystream1\"}},\"filter1\":{\"type\":\"drawbox\",\"in\":[\"stream_v1\"],\"out\":[\"stream_v3\"],\"properties\":{}},\"out1\":{\"type\":\"_OUT\",\"in\":[\"stream_v3\",\"stream_a2\"],\"out\":[],\"properties\":{\"dst\":\"rtmp://localhost/mystream2\"}}}"}
 
 
 ###
