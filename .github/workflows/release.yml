@@ -1,4 +1,4 @@
-name: ci
+name: release
 
 on:
   workflow_dispatch:
@@ -30,7 +30,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./WorkerApi/WorkerApi
+          context: ./WorkerApi
           file: ./WorkerApi/WorkerApi/Dockerfile
           push: true
           tags: webjosse/ta-amiya:${{ github.event.inputs.tag }}
