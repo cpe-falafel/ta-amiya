@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using WorkerApi.Models;
 
 namespace WorkerApi.Services
 {
@@ -12,21 +13,24 @@ namespace WorkerApi.Services
             _logger = logger;
         }
 
-        public async Task RunFfmpegCommandAsync(string ffmpegCommand)
+        public async Task RunFfmpegCommandAsync(VideoCommand ffmpegCommand)
         {
             StopFfmpegCommand(); // Stop any running FFmpeg process
 
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "ffmpeg",
+                Arguments = ffmpegCommand.Compile(),
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            
             _ffmpegProcess = new Process
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "ffmpeg",
-                    Arguments = ffmpegCommand,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                },
+                StartInfo=startInfo,
                 EnableRaisingEvents = true
             };
 
