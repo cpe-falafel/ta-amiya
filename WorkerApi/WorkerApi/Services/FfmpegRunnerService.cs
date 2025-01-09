@@ -17,6 +17,8 @@ namespace WorkerApi.Services
         {
             StopFfmpegCommand(); // Stop any running FFmpeg process
 
+            //var commandTest = "-i rtmp://liveserver:1935/live1/test -vf drawbox=x=100:y=100:w=200:h=200:color=red -c:v libx264 -preset veryfast -pix_fmt yuv420p -c:a copy -f flv rtmp://liveserver:1935/live2/test";
+
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = "ffmpeg",

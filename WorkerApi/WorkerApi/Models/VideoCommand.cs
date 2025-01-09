@@ -5,7 +5,7 @@ namespace WorkerApi.Models
 {
     public class VideoCommand
     {
-        public StringBuilder Args { get; } = new StringBuilder("ffmpeg");
+        public StringBuilder Args { get; } = new StringBuilder();
 
         public Dictionary<string, string> Env { get; } = new Dictionary<string, string>();
 
