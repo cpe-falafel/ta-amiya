@@ -49,9 +49,14 @@ namespace WorkerApi.Services
             Dictionary<string, StreamGraphItem> streamDict = new Dictionary<string, StreamGraphItem>();
             foreach (KeyValuePair<string, FilterGraphItem> itemKv in filterDict)
             {
-                var outRealNames = new List<string>();
+                var outRealNames = new List<string?>();
                 foreach (string streamName in itemKv.Value.Out)
                 {
+                    if (streamName == null)
+                    {
+                        outRealNames.Add(null);
+                        continue;
+                    }
                     if (streamDict.TryAdd(streamName, new StreamGraphItem("s" + count.ToString()))) { count++; }
                     StreamGraphItem? item = null;
                     if (streamDict.TryGetValue(streamName, out item)) { 
@@ -60,9 +65,14 @@ namespace WorkerApi.Services
                     };
                 }
 
-                var inRealNames = new List<string>();
+                var inRealNames = new List<string?>();
                 foreach (string streamName in itemKv.Value.In)
                 {
+                    if (streamName == null)
+                    {
+                        inRealNames.Add(null);
+                        continue;
+                    }
                     if (streamDict.TryAdd(streamName, new StreamGraphItem("s" + count.ToString()))) { count++; }
                     StreamGraphItem? item = null;
                     if (streamDict.TryGetValue(streamName, out item))

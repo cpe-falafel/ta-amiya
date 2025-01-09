@@ -5,7 +5,7 @@ using WorkerApi.Services;
 
 namespace WorkerApi.Models.Filters
 {
-    public class InFilter : FilterVertex
+    public class InFilter : AbstractFilterComplexVertex
     {
 
         public override string FilterName => "_IN";
@@ -15,6 +15,8 @@ namespace WorkerApi.Models.Filters
         public override string[] InStreams { get; } = [];
 
         private readonly string? _src;
+
+        private int _lastIdx;
 
         private readonly string? _videoOutName;
         private readonly string? _audioOutName;
@@ -26,12 +28,10 @@ namespace WorkerApi.Models.Filters
             ];
         }
 
-        private void AddCmdArgs(StringBuilder sb, string inEnvName, string inFilterEnvName)
+        private void AddCmdArgs(StringBuilder sb, string inEnvName)
         {
             sb.Append(" -i");
             sb.Append($" \"${inEnvName}\"");
-            sb.Append(" -filter_complex");
-            sb.Append($" \"${inFilterEnvName}\"");
         }
 
         private string BuildFilter(int idx)
@@ -46,14 +46,18 @@ namespace WorkerApi.Models.Filters
         public void AddInput(int idx, VideoCommand cmd)
         {
             var inEnvName = "AMIYA_IN_" + idx.ToString();
-            var inFilterEnvName = "AMIYA_INFILTER_" + idx.ToString();
 
-            AddCmdArgs(cmd.Args, inEnvName, inFilterEnvName);
+            AddCmdArgs(cmd.Args, inEnvName);
 
             cmd.Env.Add(inEnvName, _src ?? "");
-            cmd.Env.Add(inFilterEnvName, BuildFilter(idx));
+
+            _lastIdx = idx;
         }
 
+        public override string ComputeFilterComplexOutput()
+        {
+            return BuildFilter(_lastIdx);
+        }
 
         public InFilter(string key, FilterGraphItem item): base(key) {
             if (!item.Type.Equals(FilterName)) throw new FilterException("Filter name is not matching");
