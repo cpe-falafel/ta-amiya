@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:51046
+@WorkerApi_HostAddress = https://localhost:59565
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -7,7 +7,7 @@ Accept: application/json
 POST {{WorkerApi_HostAddress}}/worker/
 Accept: application/json
 Content-Type: application/json
-{"jsonWorkerConfiguration":"{\"1\":{\"type\":\"_IN\",\"properties\":{\"src\":\"rtmp://liveserver:1935/live1/test\"},\"in\":[],\"out\":[\"e1-3\",\"eaa1-3\"]},\"2\":{\"type\":\"_OUT\",\"properties\":{\"dst\":\"rtmp://liveserver:1935/live2/test\"},\"in\":[\"e3-2\",\"eaa1-3\"],\"out\":[]},\"3\":{\"type\":\"drawbox\",\"properties\":{\"color\":\"#000000\",\"top\":0,\"bottom\":0,\"left\":0,\"right\":0,\"thickness\":1},\"in\":[\"e1-3\"],\"out\":[\"e3-2\"]}}"}
+{"jsonWorkerConfiguration":"{\"1\":{\"type\":\"_IN\",\"properties\":{\"src\":\"rtmp://liveserver:1935/live1/test\"},\"in\":[],\"out\":[\"e1-3\",\"eaa1-3\"]},\"2\":{\"type\":\"_OUT\",\"properties\":{\"dst\":\"rtmp://liveserver:1935/live2/test\"},\"in\":[\"e3-2\",\"eaa1-3\"],\"out\":[]},\"3\":{\"type\":\"drawbox\",\"properties\":{\"color\":\"blue\",\"top\":5,\"bottom\":5,\"left\":5,\"right\":5,\"thickness\":5},\"in\":[\"e1-3\"],\"out\":[\"e3-2\"]}}"}
 
 
 ### TEST FROM Front
