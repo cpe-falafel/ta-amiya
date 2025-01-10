@@ -1,0 +1,16 @@
+﻿version: '3.8'
+
+services:
+  liveserver:
+    image: tiangolo/nginx-rtmp:latest-2024-12-02
+    container_name: liveserver
+    ports:
+        - "1935:1935"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+  amiya:
+    image: webjosse/ta-amiya:latest
+    container_name: amiya
+    ports:
+        - "8090:8080"
+        - "8091:8081"
