@@ -44,5 +44,19 @@ namespace WorkerApi.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
+
+        [HttpPost("stop", Name = "StopWorker")]
+        public IActionResult StopWorker()
+        {
+            try
+            {
+                _ffmpegRunnerService.StopAllFfmpegProcesses();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
     }
 }

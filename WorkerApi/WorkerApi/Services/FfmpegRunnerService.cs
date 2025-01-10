@@ -29,17 +29,17 @@ namespace WorkerApi.Services
                 CreateNoWindow = true
             };
 
-            
+
             _ffmpegProcess = new Process
             {
-                StartInfo=startInfo,
+                StartInfo = startInfo,
                 EnableRaisingEvents = true
             };
 
             // Gestions des sorties standard et d'erreur
             _ffmpegProcess.OutputDataReceived += (sender, e) => _logger.LogInformation($"[Ffmpeg Output] {e.Data}");
             _ffmpegProcess.ErrorDataReceived += (sender, e) => _logger.LogError($"[Ffmpeg Error] {e.Data}");
-            
+
             try
             {
                 // Démarrage du processus FFmpeg
@@ -70,6 +70,27 @@ namespace WorkerApi.Services
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error stopping FFmpeg process: {ex.Message}");
+                }
+            }
+        }
+
+        public void StopAllFfmpegProcesses()
+        {
+
+            var ffmpegProcesses = Process.GetProcessesByName("ffmpeg");
+
+            foreach (var process in ffmpegProcesses)
+            {
+                try
+                {
+                    process.Kill();
+                    process.Dispose();
+
+                    _logger.LogInformation($"FFmpeg process {process.Id} stopped");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Error stopping FFmpeg process {process.Id} : {ex.Message}");
                 }
             }
         }
