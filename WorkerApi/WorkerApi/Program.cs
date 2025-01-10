@@ -1,4 +1,5 @@
 using WorkerApi.Services;
+using WorkerApi.Services.Process;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddTransient<IFilterGraphService, FilterGraphService>();
 builder.Services.AddTransient<ICommandBuildService, CommandBuildService>();
 builder.Services.AddTransient<IFilterComplexBuilder, FilterComplexBuilder>();
 builder.Services.AddTransient<FfmpegRunnerService>();
+builder.Services.AddTransient<IProcessFactory, ProcessFactory>();
+builder.Services.AddTransient<IProcessWrapper, ProcessWrapper>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,16 +1,19 @@
-﻿using System.Diagnostics;
-using WorkerApi.Models;
+﻿using WorkerApi.Models;
+using System.Diagnostics;
+using WorkerApi.Services.Process;
 
 namespace WorkerApi.Services
 {
     public class FfmpegRunnerService
     {
-        private Process _ffmpegProcess;
+        private IProcessWrapper _ffmpegProcess;
         private readonly ILogger<FfmpegRunnerService> _logger;
+        private readonly IProcessFactory _processFactory;
 
-        public FfmpegRunnerService(ILogger<FfmpegRunnerService> logger)
+        public FfmpegRunnerService(ILogger<FfmpegRunnerService> logger, IProcessFactory processFactory)
         {
             _logger = logger;
+            _processFactory = processFactory;
         }
 
         public async Task RunFfmpegCommandAsync(VideoCommand ffmpegCommand)
@@ -29,12 +32,9 @@ namespace WorkerApi.Services
                 CreateNoWindow = true
             };
 
-
-            _ffmpegProcess = new Process
-            {
-                StartInfo = startInfo,
-                EnableRaisingEvents = true
-            };
+            _ffmpegProcess = _processFactory.CreateProcess();
+            _ffmpegProcess.StartInfo = startInfo;
+            _ffmpegProcess.EnableRaisingEvents = true;
 
             // Gestions des sorties standard et d'erreur
             _ffmpegProcess.OutputDataReceived += (sender, e) => _logger.LogInformation($"[Ffmpeg Output] {e.Data}");
@@ -77,7 +77,7 @@ namespace WorkerApi.Services
         public void StopAllFfmpegProcesses()
         {
 
-            var ffmpegProcesses = Process.GetProcessesByName("ffmpeg");
+            var ffmpegProcesses = _processFactory.GetProcessesByName("ffmpeg");
 
             foreach (var process in ffmpegProcesses)
             {
@@ -86,11 +86,11 @@ namespace WorkerApi.Services
                     process.Kill();
                     process.Dispose();
 
-                    _logger.LogInformation($"FFmpeg process {process.Id} stopped");
+                    _logger.LogInformation($"FFmpeg process {process.ProcessId} stopped");
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Error stopping FFmpeg process {process.Id} : {ex.Message}");
+                    _logger.LogError(ex, $"Error stopping FFmpeg process {process.ProcessId} : {ex.Message}");
                 }
             }
         }
