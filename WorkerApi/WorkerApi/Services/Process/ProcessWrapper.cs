@@ -10,6 +10,13 @@ namespace WorkerApi.Services.Process
         {
             _process = new System.Diagnostics.Process();
         }
+
+        // Constructeur supplémentaire pour wrapper un processus existant
+        public ProcessWrapper(System.Diagnostics.Process process)
+        {
+            _process = process ?? throw new ArgumentNullException(nameof(process));
+        }
+
         public bool HasExited => _process.HasExited;
         public ProcessStartInfo StartInfo
         {

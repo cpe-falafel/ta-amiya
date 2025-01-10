@@ -18,9 +18,8 @@ namespace WorkerApi.Services
 
         public async Task RunFfmpegCommandAsync(VideoCommand ffmpegCommand)
         {
-            StopFfmpegCommand(); // Stop any running FFmpeg process
-
-            //var commandTest = "-i rtmp://liveserver:1935/live1/test -vf drawbox=x=100:y=100:w=200:h=200:color=red -c:v libx264 -preset veryfast -pix_fmt yuv420p -c:a copy -f flv rtmp://liveserver:1935/live2/test";
+            // Arrêter tous les processus ffmpeg existants
+            StopAllFfmpegProcesses();
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -44,11 +43,9 @@ namespace WorkerApi.Services
             {
                 // Démarrage du processus FFmpeg
                 _ffmpegProcess.Start();
-                _ffmpegProcess.BeginOutputReadLine(); // Début de la lecture de la sortie standard
-                _ffmpegProcess.BeginErrorReadLine(); // Début de la lecture de la sortie d'erreur
-
+                _ffmpegProcess.BeginOutputReadLine();
+                _ffmpegProcess.BeginErrorReadLine();
                 _logger.LogInformation("FFmpeg process started");
-
                 await _ffmpegProcess.WaitForExitAsync();
             }
             catch (Exception ex)
@@ -57,27 +54,9 @@ namespace WorkerApi.Services
             }
         }
 
-        public void StopFfmpegCommand()
-        {
-            if (_ffmpegProcess != null && !_ffmpegProcess.HasExited)
-            {
-                try
-                {
-                    _ffmpegProcess.Kill(); // Kill the process
-                    _ffmpegProcess.Dispose(); // Dispose the process to free resources
-                    _logger.LogInformation("FFmpeg process stopped");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error stopping FFmpeg process: {ex.Message}");
-                }
-            }
-        }
-
         public void StopAllFfmpegProcesses()
         {
-
-            var ffmpegProcesses = _processFactory.GetProcessesByName("ffmpeg");
+            var ffmpegProcesses = System.Diagnostics.Process.GetProcessesByName("ffmpeg");
 
             foreach (var process in ffmpegProcesses)
             {
@@ -85,12 +64,11 @@ namespace WorkerApi.Services
                 {
                     process.Kill();
                     process.Dispose();
-
-                    _logger.LogInformation($"FFmpeg process {process.ProcessId} stopped");
+                    _logger.LogInformation($"FFmpeg process {process.Id} stopped");
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Error stopping FFmpeg process {process.ProcessId} : {ex.Message}");
+                    _logger.LogError(ex, $"Error stopping FFmpeg process {process.Id} : {ex.Message}");
                 }
             }
         }
