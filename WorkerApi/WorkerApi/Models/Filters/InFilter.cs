@@ -37,8 +37,18 @@ namespace WorkerApi.Models.Filters
         private string BuildFilter(int idx)
         {
             var filters = new List<String>();
-            if (_videoOutName != null) filters.Add($"[{idx}:v]null[{_videoOutName}]");
-            if (_audioOutName != null) filters.Add($"[{idx}:a]anull[{_audioOutName}]");
+
+            if (_videoOutName != null && _audioOutName != null)
+            {
+                filters.Add($"[{idx}:v]null[{_videoOutName}]");
+                filters.Add($"[{idx}:a]anull[{_audioOutName}]");
+            } else if (_videoOutName != null)
+            {
+                filters.Add($"[{idx}]null[{_videoOutName}]");
+            } else if (_audioOutName != null)
+            {
+                filters.Add($"[{idx}]anull[{_videoOutName}]");
+            }
             return String.Join(";", filters);
         }
 
