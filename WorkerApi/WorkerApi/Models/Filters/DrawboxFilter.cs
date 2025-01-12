@@ -47,12 +47,12 @@ namespace WorkerApi.Models.Filters
             this.InStreams = item.In.ToArray();
             this.OutStreams = item.Out.ToArray();
 
-            _left = item.Properties.GetValueOrDefault("left", "").ToString();
-            _right = item.Properties.GetValueOrDefault("right", "").ToString();
-            _top = item.Properties.GetValueOrDefault("top", "").ToString();
-            _bottom = item.Properties.GetValueOrDefault("bottom", "").ToString();
-            _color = item.Properties.GetValueOrDefault("color", "").ToString();
-            _thickness = item.Properties.GetValueOrDefault("thickness", "").ToString();
+            _left = item.Properties.GetValueOrDefault("left", "0").ToString();
+            _right = item.Properties.GetValueOrDefault("right", "0").ToString();
+            _top = item.Properties.GetValueOrDefault("top", "0").ToString();
+            _bottom = item.Properties.GetValueOrDefault("bottom", "0").ToString();
+            _color = item.Properties.GetValueOrDefault("color", "#FF0000").ToString();
+            _thickness = item.Properties.GetValueOrDefault("thickness", "1").ToString();
         }
     }
 }

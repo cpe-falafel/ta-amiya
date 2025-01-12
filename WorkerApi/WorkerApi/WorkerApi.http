@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:60006
+@WorkerApi_HostAddress = https://localhost:54673
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -8,7 +8,7 @@ POST {{WorkerApi_HostAddress}}/worker/
 Accept: application/json
 Content-Type: application/json
 {"jsonWorkerConfiguration":
-"{\"1\":{\"type\":\"_IN\",\"properties\":{\"_label\":\"Entrée\",\"src\":\"rtmp://liveserver:1935/live1/test\"},\"in\":[],\"out\":[\"e1-3\",\"vueflow__edge-1source-1-a1-2target-2-a1\"]},\"2\":{\"type\":\"_OUT\",\"properties\":{\"_label\":\"Sortie\",\"dst\":\"rtmp://liveserver:1935/live2/test\"},\"in\":[\"vueflow__edge-1736510025983source-1736510025983-v1-2target-2-v1\",\"vueflow__edge-1source-1-a1-2target-2-a1\"],\"out\":[]},\"3\":{\"type\":\"drawbox\",\"properties\":{\"_label\":\"Ajout Cadre Bleu\",\"color\":\"#0021ff\",\"top\":5,\"bottom\":5,\"left\":5,\"right\":5,\"thickness\":5},\"in\":[\"e1-3\"],\"out\":[\"vueflow__edge-3source-3-v1-1736510025983target-1736510025983-v1\"]},\"1736510025983\":{\"type\":\"drawbox\",\"properties\":{\"color\":\"#ff0000\",\"top\":0,\"bottom\":0,\"left\":0,\"right\":0,\"thickness\":5,\"_label\":\"Ajout cadre rouge\"},\"in\":[\"vueflow__edge-3source-3-v1-1736510025983target-1736510025983-v1\"],\"out\":[\"vueflow__edge-1736510025983source-1736510025983-v1-2target-2-v1\"]}}"
+"{\"in1\":{\"type\":\"_IN\",\"in\":[],\"out\":[\"stream_v1\",\"stream_a2\"],\"properties\":{\"src\":\"rtmp://liveserver:1935/live1/test\"}},\"filter1\":{\"type\":\"split\",\"in\":[\"stream_v1\"],\"out\":[\"stream_v3\",\"stream_v4\"],\"properties\":{}},\"filter2\":{\"type\":\"drawbox\",\"in\":[\"stream_v3\"],\"out\":[\"stream_v5\"],\"properties\":{\"color\":\"#FFFFFF\",\"thickness\":7,\"top\":0,\"bottom\":0,\"right\":0,\"left\":0}},\"filter3\":{\"type\":\"flip\",\"in\":[\"stream_v4\"],\"out\":[\"stream_v6\"],\"properties\":{\"h\":true,\"v\":false}},\"filter4\":{\"type\":\"drawbox\",\"in\":[\"stream_v6\"],\"out\":[\"stream_v7\"],\"properties\":{\"color\":\"#0000FF\",\"thickness\":7,\"top\":0,\"bottom\":0,\"right\":0,\"left\":0}},\"filter5\":{\"type\":\"stack\",\"in\":[\"stream_v7\",\"stream_v5\"],\"out\":[\"stream_v8\"],\"properties\":{\"horizontal_mode\":true}},\"out1\":{\"type\":\"_OUT\",\"in\":[\"stream_v8\",\"stream_a2\"],\"out\":[],\"properties\":{\"dst\":\"rtmp://liveserver:1935/live2/test\"}}}"
 }
 
 

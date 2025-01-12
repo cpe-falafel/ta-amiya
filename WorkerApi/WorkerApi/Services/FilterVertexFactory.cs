@@ -12,6 +12,12 @@ namespace WorkerApi.Services
             {
                 case "drawbox":
                     return new DrawboxFilter(key, item);
+                case "split":
+                    return new SplitFilter(key, item);
+                case "stack":
+                    return new StackFilter(key, item);
+                case "flip":
+                    return new FlipFilter(key, item);
                 case "_IN":
                     return new InFilter(key, item);
                 case "_OUT":
