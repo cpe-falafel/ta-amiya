@@ -1,7 +1,11 @@
 ﻿using WorkerApi.Services;
+using WorkerApi.Utils;
 
 namespace WorkerApi.Models.Filters
 {
+    /**
+     * Uses split + scale +hstack of vstack to adapt and stack
+     */
     public class StackFilter : AbstractFilterComplexVertex
     {
 
@@ -36,7 +40,7 @@ namespace WorkerApi.Models.Filters
             this.InStreams = item.In.ToArray();
             this.OutStreams = item.Out.ToArray();
 
-            _horizontalMode = item.Properties.GetValueOrDefault("horizontal_mode", "false")?.ToString()?.ToLower()?.Equals("true") ?? false;
+            _horizontalMode = ConversionUtils.EnsureBool(item.Properties.GetValueOrDefault("horizontal_mode", "false")) ?? false;
         }
     }
 }

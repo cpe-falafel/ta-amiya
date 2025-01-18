@@ -1,4 +1,5 @@
 ﻿using WorkerApi.Services;
+using WorkerApi.Utils;
 
 namespace WorkerApi.Models.Filters
 {
@@ -34,7 +35,7 @@ namespace WorkerApi.Models.Filters
             this.InStreams = item.In.ToArray();
             this.OutStreams = item.Out.ToArray();
 
-            _audioMode = item.Properties.GetValueOrDefault("audio_mode", "false")?.ToString()?.ToLower()?.Equals("true") ?? false;
+            _audioMode = ConversionUtils.EnsureBool(item.Properties.GetValueOrDefault("audio_mode", "false")) ?? false;
         }
     }
 }

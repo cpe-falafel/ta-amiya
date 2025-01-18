@@ -47,7 +47,7 @@ namespace WorkerApi.Models.Filters
                 filters.Add($"[{idx}]null[{_videoOutName}]");
             } else if (_audioOutName != null)
             {
-                filters.Add($"[{idx}]anull[{_videoOutName}]");
+                filters.Add($"[{idx}]anull[{_audioOutName}]");
             }
             return String.Join(";", filters);
         }

@@ -1,5 +1,6 @@
 ﻿using WorkerApi.Models.Graph;
 using WorkerApi.Services;
+using WorkerApi.Utils;
 
 namespace WorkerApi.Models.Filters
 {
@@ -43,8 +44,8 @@ namespace WorkerApi.Models.Filters
             this.InStreams = item.In.ToArray();
             this.OutStreams = item.Out.ToArray();
 
-            _h = item.Properties.GetValueOrDefault("h", "true")?.ToString()?.ToLower()?.Equals("true") ?? true;
-            _v = item.Properties.GetValueOrDefault("v", "false")?.ToString()?.ToLower()?.Equals("true") ?? false;
+            _h = ConversionUtils.EnsureBool(item.Properties.GetValueOrDefault("h", "true")) ?? true;
+            _v = ConversionUtils.EnsureBool(item.Properties.GetValueOrDefault("v", "false")) ?? false;
         }
     }
 }

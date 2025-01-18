@@ -19,7 +19,7 @@ namespace WorkerApi.Models
                 string key = match.Groups[1].Value;
                 if (Env.TryGetValue(key, out string? value))
                 {
-                    return (value??"").Replace("\"","\\\"");
+                    return (value??"").Replace("\\", "\\\\").Replace("\"","\\\"");
                 }
                 return match.Value; // Return the original match if the key is not found in Env
             });

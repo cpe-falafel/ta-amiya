@@ -29,6 +29,8 @@ namespace WorkerApi.Services
                 CreateNoWindow = true
             };
 
+            _logger.LogInformation($"Arguments sent: {startInfo.Arguments}");
+
             
             _ffmpegProcess = new Process
             {

@@ -12,6 +12,7 @@ namespace WorkerApi.Models.Filters
 
         public override string[] InStreams { get; }
 
+        // TODO: secure this by using integers
         private readonly string? _left;
         private readonly string? _right;
         private readonly string? _top;
