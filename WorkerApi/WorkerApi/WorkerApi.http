@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:61635
+@WorkerApi_HostAddress = https://localhost:61090
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -17,3 +17,9 @@ POST {{WorkerApi_HostAddress}}/worker/
 Accept: application/json
 Content-Type: application/json
 {"1":{"type":"_IN","properties":{"src":""},"in":[],"out":["e1-3",null]},"2":{"type":"_OUT","properties":{"dst":""},"in":["e3-2",null],"out":[]},"3":{"type":"drawbox","properties":{"color":"#000000","top":0,"bottom":0,"left":0,"right":0,"thickness":1},"in":["e1-3"],"out":["e3-2"]}}
+
+### StopWorker
+POST {{WorkerApi_HostAddress}}/worker/stop
+Accept: application/json
+Content-Type: application/json
+{}
