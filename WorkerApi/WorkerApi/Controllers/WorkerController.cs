@@ -32,11 +32,25 @@ namespace WorkerApi.Controllers
                 //var commandTest = "ffmpeg -i rtmp://localhost:1935/live/test -c copy -f flv rtmp://localhost:1935/input/test\r\n";
 
                 // run ffmpeg command :
-                if (command != null && command.Args.Length > 0)
+                if (command != null && command.Args.Count > 0)
                 {
                     Task _ = _ffmpegRunnerService.RunFfmpegCommandAsync(command);
                 }
 
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        [HttpPost("stop", Name = "StopWorker")]
+        public IActionResult StopWorker()
+        {
+            try
+            {
+                _ffmpegRunnerService.StopAllFfmpegProcesses();
                 return Ok();
             }
             catch (Exception ex)

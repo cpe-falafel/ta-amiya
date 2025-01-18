@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:60006
+@WorkerApi_HostAddress = https://localhost:61090
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -8,7 +8,7 @@ POST {{WorkerApi_HostAddress}}/worker/
 Accept: application/json
 Content-Type: application/json
 {"jsonWorkerConfiguration":
-"{\"1\":{\"type\":\"_IN\",\"properties\":{\"_label\":\"Entrée\",\"src\":\"rtmp://liveserver:1935/live1/test\"},\"in\":[],\"out\":[\"e1-3\",\"vueflow__edge-1source-1-a1-2target-2-a1\"]},\"2\":{\"type\":\"_OUT\",\"properties\":{\"_label\":\"Sortie\",\"dst\":\"rtmp://liveserver:1935/live2/test\"},\"in\":[\"vueflow__edge-1736510025983source-1736510025983-v1-2target-2-v1\",\"vueflow__edge-1source-1-a1-2target-2-a1\"],\"out\":[]},\"3\":{\"type\":\"drawbox\",\"properties\":{\"_label\":\"Ajout Cadre Bleu\",\"color\":\"#0021ff\",\"top\":5,\"bottom\":5,\"left\":5,\"right\":5,\"thickness\":5},\"in\":[\"e1-3\"],\"out\":[\"vueflow__edge-3source-3-v1-1736510025983target-1736510025983-v1\"]},\"1736510025983\":{\"type\":\"drawbox\",\"properties\":{\"color\":\"#ff0000\",\"top\":0,\"bottom\":0,\"left\":0,\"right\":0,\"thickness\":5,\"_label\":\"Ajout cadre rouge\"},\"in\":[\"vueflow__edge-3source-3-v1-1736510025983target-1736510025983-v1\"],\"out\":[\"vueflow__edge-1736510025983source-1736510025983-v1-2target-2-v1\"]}}"
+"{\"in1\":{\"type\":\"_IN\",\"in\":[],\"out\":[\"stream_1\",null],\"properties\":{\"src\":\"rtmp://liveserver:1935/live1/test\"}},\"filter1\":{\"type\":\"zoom\",\"in\":[\"stream_1\"],\"out\":[\"stream_2\"],\"properties\":{\"zw\":1.5,\"zh\":1,\"zy\":50}},\"filter2\":{\"type\":\"drawtext\",\"in\":[\"stream_2\"],\"out\":[\"stream_3\"],\"properties\":{\"y\":0.8,\"font_size\":20,\"color\":\"#FF0000\",\"text\":\":AMOGUS\"}},\"filter3\":{\"type\":\"zoom\",\"in\":[\"stream_3\"],\"out\":[\"stream_4\"],\"properties\":{\"zw\":1.5,\"zx\":-75}},\"filter4\":{\"type\":\"drawtext\",\"in\":[\"stream_4\"],\"out\":[\"stream_5\"],\"properties\":{\"color\":\"#invalid\",\"text\":\"'caractère\\\\ spécial\\\"\",\"align\":\"left\"}},\"out1\":{\"type\":\"_OUT\",\"in\":[\"stream_5\",null],\"out\":[],\"properties\":{\"dst\":\"rtmp://liveserver:1935/live2/test\"}}}"
 }
 
 
@@ -17,3 +17,9 @@ POST {{WorkerApi_HostAddress}}/worker/
 Accept: application/json
 Content-Type: application/json
 {"1":{"type":"_IN","properties":{"src":""},"in":[],"out":["e1-3",null]},"2":{"type":"_OUT","properties":{"dst":""},"in":["e3-2",null],"out":[]},"3":{"type":"drawbox","properties":{"color":"#000000","top":0,"bottom":0,"left":0,"right":0,"thickness":1},"in":["e1-3"],"out":["e3-2"]}}
+
+### StopWorker
+POST {{WorkerApi_HostAddress}}/worker/stop
+Accept: application/json
+Content-Type: application/json
+{}

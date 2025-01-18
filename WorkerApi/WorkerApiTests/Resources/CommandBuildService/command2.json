@@ -1,0 +1,40 @@
+{
+    "in1": {
+        "type": "_IN",
+        "in": [],
+        "out": [ "stream_1", null ],
+        "properties": {
+            "src": "rtmp://localhost/mystream1"
+        }
+    },
+    "in2": {
+        "type": "_IN",
+        "in": [],
+        "out": [ null, "stream_2" ],
+        "properties": {
+            "src": "rtmp://localhost/mystream2"
+        }
+    },
+    "filter1": {
+        "type": "split",
+        "in": [ "stream_1" ],
+        "out": [ "stream_3", "stream_4" ],
+        "properties": {}
+    },
+    "filter2": {
+        "type": "stack",
+        "in": [ "stream_3", "stream_4" ],
+        "out": [ "stream_5" ],
+        "properties": {
+            "horizontal_mode": true
+        }
+    },
+    "out1": {
+        "type": "_OUT",
+        "in": [ "stream_5", "stream_2" ],
+        "out": [],
+        "properties": {
+            "dst": "rtmp://localhost/mystream3"
+        }
+    }
+}
