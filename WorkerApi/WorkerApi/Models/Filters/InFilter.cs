@@ -28,12 +28,6 @@ namespace WorkerApi.Models.Filters
             ];
         }
 
-        private void AddCmdArgs(StringBuilder sb, string inEnvName)
-        {
-            sb.Append(" -i");
-            sb.Append($" \"${inEnvName}\"");
-        }
-
         private string BuildFilter(int idx)
         {
             var filters = new List<String>();
@@ -57,9 +51,8 @@ namespace WorkerApi.Models.Filters
         {
             var inEnvName = "AMIYA_IN_" + idx.ToString();
 
-            AddCmdArgs(cmd.Args, inEnvName);
-
-            cmd.Env.Add(inEnvName, _src ?? "");
+            cmd.Args.Add("-i");
+            cmd.Args.Add(_src);
 
             _lastIdx = idx;
         }

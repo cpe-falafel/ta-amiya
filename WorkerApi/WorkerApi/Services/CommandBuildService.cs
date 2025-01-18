@@ -53,9 +53,8 @@ namespace WorkerApi.Services
             {
                 filterComplexBuilder.AddFilter(filter);
             }
-            cmd.Args.Append(" -filter_complex");
-            cmd.Args.Append(" \"$AMIYA_FC\"");
-            cmd.Env.Add("AMIYA_FC", filterComplexBuilder.BuildFilterComplex());
+            cmd.Args.Add("-filter_complex");
+            cmd.Args.Add(filterComplexBuilder.BuildFilterComplex());
         }
 
         private void AddInputs(VideoCommand cmd, BidirectionalGraph<FilterVertex, StreamEdge> graph)

@@ -19,17 +19,15 @@ namespace WorkerApi.Services
 
             //var commandTest = "-i rtmp://liveserver:1935/live1/test -vf drawbox=x=100:y=100:w=200:h=200:color=red -c:v libx264 -preset veryfast -pix_fmt yuv420p -c:a copy -f flv rtmp://liveserver:1935/live2/test";
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            ProcessStartInfo startInfo = new ProcessStartInfo("ffmpeg", ffmpegCommand.Args)
             {
-                FileName = "ffmpeg",
-                Arguments = ffmpegCommand.Compile(),
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
 
-            _logger.LogInformation($"Arguments sent: {startInfo.Arguments}");
+            //_logger.LogInformation($"Arguments sent: {startInfo.Arguments}");
 
             
             _ffmpegProcess = new Process
