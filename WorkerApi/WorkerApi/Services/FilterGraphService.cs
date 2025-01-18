@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.FileSystemGlobbing.Internal;
+using Microsoft.Extensions.FileSystemGlobbing;
+using Newtonsoft.Json;
 using QuickGraph;
 using WorkerApi.Models.Graph;
+using System.Text.RegularExpressions;
 
 namespace WorkerApi.Services
 {
@@ -112,7 +115,8 @@ namespace WorkerApi.Services
 
         public StreamGraphItem(String name)
         {
-            Name = name;
+            if (Regex.IsMatch(name, "[^a-zA-Z0-9]")) throw new IOException("StreamGraphItem name should be alphanum");
+            this.Name = name;
         }
     }
 }

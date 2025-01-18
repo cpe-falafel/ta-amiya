@@ -2,12 +2,12 @@
     "in1": {
         "type": "_IN",
         "in": [],
-        "out": [ "stream_1" ],
+        "out": [ "stream_1", null ],
         "properties": {}
     },
     "out1": {
         "type": "_OUT",
-        "in": [ "stream_2" ],
+        "in": [ "stream_2", null ],
         "out": [],
         "properties": {}
     }

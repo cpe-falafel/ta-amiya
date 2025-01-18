@@ -12,7 +12,6 @@ builder.Logging.AddEventSourceLogger();
 // Add services to the container.
 builder.Services.AddTransient<IFilterGraphService, FilterGraphService>();
 builder.Services.AddTransient<ICommandBuildService, CommandBuildService>();
-builder.Services.AddTransient<IFilterComplexBuilder, FilterComplexBuilder>();
 builder.Services.AddTransient<FfmpegRunnerService>();
 builder.Services.AddTransient<IProcessFactory, ProcessFactory>();
 builder.Services.AddTransient<IProcessWrapper, ProcessWrapper>();

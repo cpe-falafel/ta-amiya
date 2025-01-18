@@ -26,39 +26,23 @@ namespace WorkerApi.Models.Filters
             ];
         }
 
-        private void AddCmdArgs(StringBuilder sb, string? outVideoStreamEnvName, string? outAudioStreamEnvName, string outEnvName)
+        public void AddOutput(int _, VideoCommand cmd)
         {
-            if (outVideoStreamEnvName != null)
+            if (_videoInName != null)
             {
-                sb.Append(" -map");
-                sb.Append($" \"[${outVideoStreamEnvName}]\"");
+                cmd.Args.Add("-map");
+                cmd.Args.Add($"[{_videoInName}]");
             }
 
-            if (outAudioStreamEnvName != null)
+            if (_audioInName != null)
             {
-                sb.Append(" -map");
-                sb.Append($" \"[${outAudioStreamEnvName}]\"");
+                cmd.Args.Add("-map");
+                cmd.Args.Add($"[{_audioInName}]");
             }
 
-            sb.Append(" -f");
-            sb.Append(" flv");
-            sb.Append($" \"${outEnvName}\"");
-        }
-
-        public void AddOutput(int idx, VideoCommand cmd)
-        {
-            var outVideoStreamEnvName= "AMIYA_OUTVID_" + idx.ToString();
-            var outAudioStreamEnvName = "AMIYA_OUTAUD_" + idx.ToString();
-            var outEnvName = "AMIYA_OUT_" + idx.ToString();
-
-            AddCmdArgs(cmd.Args,
-                _videoInName == null ? null : outVideoStreamEnvName,
-                _audioInName == null ? null : outAudioStreamEnvName,
-                outEnvName);
-
-            cmd.Env.Add(outVideoStreamEnvName, _videoInName ?? "");
-            cmd.Env.Add(outAudioStreamEnvName, _audioInName ?? "");
-            cmd.Env.Add(outEnvName, _dst ?? "");
+            cmd.Args.Add("-f");
+            cmd.Args.Add("flv");
+            cmd.Args.Add(_dst ?? "");
         }
 
         public OutFilter(string key, FilterGraphItem item): base(key)

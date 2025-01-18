@@ -1,0 +1,40 @@
+{
+    "in1": {
+        "type": "_IN",
+        "in": [],
+        "out": [ "e_v1", "e_a1" ],
+        "properties": {
+            "src": "rtmp://localhost/mystream1"
+        }
+    },
+    "filter1": {
+        "type": "drawbox",
+        "in": [ "e_v1" ],
+        "out": [ "e_v2" ],
+        "properties": {
+            "color": "#FFFFFF",
+            "thickness": 5,
+            "top": 5,
+            "bottom": 0,
+            "left": 10,
+            "right": 10
+        }
+    },
+    "filter2": {
+        "type": "flip",
+        "in": [ "e_v2" ],
+        "out": [ "e_v3" ],
+        "properties": {
+            "h": true,
+            "v": true
+        }
+    },
+    "out1": {
+        "type": "_OUT",
+        "in": [ "e_v3", "e_a1" ],
+        "out": [],
+        "properties": {
+            "dst": "rtmp://localhost/mystream2"
+        }
+    }
+}

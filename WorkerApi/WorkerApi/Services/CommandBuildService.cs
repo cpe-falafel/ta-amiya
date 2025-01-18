@@ -9,13 +9,13 @@ namespace WorkerApi.Services
     {
         private readonly IFilterGraphService _filterGraphService;
         private readonly ILogger<ICommandBuildService> _logger;
-        private readonly IFilterComplexBuilder _filterComplexBuilder;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public CommandBuildService(IFilterGraphService filterGraphService, ILogger<ICommandBuildService> logger, IFilterComplexBuilder filterComplexBuilder)
+        public CommandBuildService(IFilterGraphService filterGraphService, ILogger<ICommandBuildService> logger, ILoggerFactory loggerFactory)
         {
             _filterGraphService = filterGraphService;
             _logger = logger;
-            _filterComplexBuilder = filterComplexBuilder;
+            _loggerFactory = loggerFactory;
         }
 
         private List<T> CastWhere<T>(List<FilterVertex> vertices) where T : FilterVertex
@@ -47,14 +47,14 @@ namespace WorkerApi.Services
 
         private void AddFilters(VideoCommand cmd, BidirectionalGraph<FilterVertex, StreamEdge> graph)
         {
+            IFilterComplexBuilder filterComplexBuilder = new FilterComplexBuilder(_loggerFactory.CreateLogger<FilterComplexBuilder>());
             var filterComplexes = CastWhere<AbstractFilterComplexVertex>(graph.Vertices.ToList());
             foreach (var filter in filterComplexes)
             {
-                _filterComplexBuilder.AddFilter(filter);
+                filterComplexBuilder.AddFilter(filter);
             }
-            cmd.Args.Append(" -filter_complex");
-            cmd.Args.Append(" \"$AMIYA_FC\"");
-            cmd.Env.Add("AMIYA_FC", _filterComplexBuilder.BuildFilterComplex());
+            cmd.Args.Add("-filter_complex");
+            cmd.Args.Add(filterComplexBuilder.BuildFilterComplex());
         }
 
         private void AddInputs(VideoCommand cmd, BidirectionalGraph<FilterVertex, StreamEdge> graph)

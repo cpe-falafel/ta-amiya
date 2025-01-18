@@ -9,6 +9,8 @@ EXPOSE 8081
 
 # Installation ffmpeg
 USER root
+# Allow unstable to get FFMPEG version 7.1
+RUN echo "deb http://deb.debian.org/debian unstable main" >> /etc/apt/sources.list
 RUN apt-get update && \
     apt-get install -y ffmpeg && \
     rm -rf /var/lib/apt/lists/*

@@ -21,10 +21,8 @@ namespace WorkerApi.Services
             // Arrêter tous les processus ffmpeg existants
             StopAllFfmpegProcesses();
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            ProcessStartInfo startInfo = new ProcessStartInfo("ffmpeg", ffmpegCommand.Args)
             {
-                FileName = "ffmpeg",
-                Arguments = ffmpegCommand.Compile(),
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
