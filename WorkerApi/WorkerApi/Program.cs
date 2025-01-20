@@ -1,3 +1,4 @@
+using QuickGraph.Algorithms.Services;
 using WorkerApi.Services;
 using WorkerApi.Services.Process;
 
@@ -10,6 +11,9 @@ builder.Logging.AddDebug();
 builder.Logging.AddEventSourceLogger();
 
 // Add services to the container.
+
+builder.Services.AddMemoryCache();
+builder.Services.AddTransient<ICachedScorerService, CachedScorerService>();
 builder.Services.AddTransient<IFilterGraphService, FilterGraphService>();
 builder.Services.AddTransient<ICommandBuildService, CommandBuildService>();
 builder.Services.AddTransient<FfmpegRunnerService>();
@@ -30,7 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

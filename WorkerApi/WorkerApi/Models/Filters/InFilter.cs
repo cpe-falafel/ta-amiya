@@ -5,7 +5,7 @@ using WorkerApi.Services;
 
 namespace WorkerApi.Models.Filters
 {
-    public class InFilter : AbstractFilterComplexVertex
+    public class InFilter : AbstractFilterComplexVertex, IInFilter
     {
 
         public override string FilterName => "_IN";
