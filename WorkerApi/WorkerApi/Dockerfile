@@ -12,6 +12,7 @@ USER root
 RUN apt-get update && \
     apt-get install -y ffmpeg && \
     rm -rf /var/lib/apt/lists/*
+
 USER app
 
 # Cette phase est utilisée pour générer le projet de service

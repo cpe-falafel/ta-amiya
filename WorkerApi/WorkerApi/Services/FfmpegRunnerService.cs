@@ -47,6 +47,7 @@ namespace WorkerApi.Services
                 _ffmpegProcess.BeginErrorReadLine();
                 _logger.LogInformation("FFmpeg process started");
                 await _ffmpegProcess.WaitForExitAsync();
+                _logger.LogInformation("FFmpeg process finished");
             }
             catch (Exception ex)
             {
