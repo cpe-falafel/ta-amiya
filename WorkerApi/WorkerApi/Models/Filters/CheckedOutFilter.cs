@@ -14,8 +14,7 @@ namespace WorkerApi.Models.Filters
         private readonly string? _fromOutName;
         private readonly string? _toOutName;
         private readonly string? _toJpgName;
-
-
+        private string? _jpgPath;
 
         public override string FilterName => "_CHECKED_OUT";
 
@@ -42,7 +41,7 @@ namespace WorkerApi.Models.Filters
                 cmd.Args.Add($"[{_toJpgName}]");
                 cmd.Args.Add($"-update");
                 cmd.Args.Add($"1");
-                cmd.Args.Add($"1");
+                cmd.Args.Add(_jpgPath);
             }
             _out.AddOutput(i, cmd);
         }
@@ -78,6 +77,7 @@ namespace WorkerApi.Models.Filters
             _fromOutName = outVideo == null ? null : outVideo + ":1";
             _toOutName = outVideo == null ? null : outVideo + ":2";
             _toJpgName = outVideo == null ? null : outVideo + ":3";
+            _jpgPath = Environment.GetEnvironmentVariable("AMIYA_OUTJPG");
             _out = new OutFilter(key, new FilterGraphItem { In = {_toOutName, item.In[1] }, Out = item.Out, Type = "_OUT", Properties = item.Properties });
         }
     }
