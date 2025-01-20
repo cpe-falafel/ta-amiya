@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:58220
+@WorkerApi_HostAddress = https://localhost:62868
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -17,7 +17,7 @@ POST {{WorkerApi_HostAddress}}/worker/
 Accept: application/json
 Content-Type: application/json
 {
-  "jsonWorkerConfiguration": "{\"in1\":{\"type\":\"_IN\",\"in\":[],\"out\":[\"stream_1\",null],\"properties\":{\"src\":\"rtmp://liveserver:1935/live1/test\"}},\"filter1\":{\"type\":\"drawbox\",\"in\":[\"stream_1\"],\"out\":[\"stream_2\"],\"properties\":{\"color\":\"#FF0000\",\"top\":0,\"bottom\":0,\"left\":0,\"right\":0,\"thickness\":5}},\"out1\":{\"type\":\"_OUT\",\"in\":[\"stream_2\",null],\"out\":[],\"properties\":{\"dst\":\"rtmp://liveserver:1935/live2/test\"}}}"
+  "jsonWorkerConfiguration": "{\"in1\":{\"type\":\"_IN\",\"in\":[],\"out\":[\"stream_1\",null],\"properties\":{\"src\":\"rtmp://liveserver:1935/live1/test\"}},\"filter1\":{\"type\":\"drawbox\",\"in\":[\"stream_1\"],\"out\":[\"stream_2\"],\"properties\":{\"color\":\"#FFFF00\",\"top\":0,\"bottom\":0,\"left\":0,\"right\":0,\"thickness\":5}},\"out1\":{\"type\":\"_OUT\",\"in\":[\"stream_2\",null],\"out\":[],\"properties\":{\"dst\":\"rtmp://liveserver:1935/live2/test\"}}}"
 }
 
 ### TEST FROM Front
