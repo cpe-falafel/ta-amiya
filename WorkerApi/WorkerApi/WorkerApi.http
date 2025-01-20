@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:61090
+@WorkerApi_HostAddress = https://localhost:58220
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -11,6 +11,14 @@ Content-Type: application/json
 "{\"in1\":{\"type\":\"_IN\",\"in\":[],\"out\":[\"stream_1\",null],\"properties\":{\"src\":\"rtmp://liveserver:1935/live1/test\"}},\"filter1\":{\"type\":\"zoom\",\"in\":[\"stream_1\"],\"out\":[\"stream_2\"],\"properties\":{\"zw\":1.5,\"zh\":1,\"zy\":50}},\"filter2\":{\"type\":\"drawtext\",\"in\":[\"stream_2\"],\"out\":[\"stream_3\"],\"properties\":{\"y\":0.8,\"font_size\":20,\"color\":\"#FF0000\",\"text\":\":AMOGUS\"}},\"filter3\":{\"type\":\"zoom\",\"in\":[\"stream_3\"],\"out\":[\"stream_4\"],\"properties\":{\"zw\":1.5,\"zx\":-75}},\"filter4\":{\"type\":\"drawtext\",\"in\":[\"stream_4\"],\"out\":[\"stream_5\"],\"properties\":{\"color\":\"#invalid\",\"text\":\"'caractère\\\\ spécial\\\"\",\"align\":\"left\"}},\"out1\":{\"type\":\"_OUT\",\"in\":[\"stream_5\",null],\"out\":[],\"properties\":{\"dst\":\"rtmp://liveserver:1935/live2/test\"}}}"
 }
 
+
+### Drawbox filter
+POST {{WorkerApi_HostAddress}}/worker/
+Accept: application/json
+Content-Type: application/json
+{
+  "jsonWorkerConfiguration": "{\"in1\":{\"type\":\"_IN\",\"in\":[],\"out\":[\"stream_1\",null],\"properties\":{\"src\":\"rtmp://liveserver:1935/live1/test\"}},\"filter1\":{\"type\":\"drawbox\",\"in\":[\"stream_1\"],\"out\":[\"stream_2\"],\"properties\":{\"color\":\"#FF0000\",\"top\":0,\"bottom\":0,\"left\":0,\"right\":0,\"thickness\":5}},\"out1\":{\"type\":\"_OUT\",\"in\":[\"stream_2\",null],\"out\":[],\"properties\":{\"dst\":\"rtmp://liveserver:1935/live2/test\"}}}"
+}
 
 ### TEST FROM Front
 POST {{WorkerApi_HostAddress}}/worker/
