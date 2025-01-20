@@ -14,6 +14,11 @@ services:
     image: ${DOCKER_REGISTRY-}workerapi
     networks:
       - worker_dev
+    environment:
+      AMIYA_API: http://01.ai.falafel.stream:5000/eval
+      AMIYA_OUTJPG: /tmp/amiya-out.jpg
+    volumes:
+        - ./out.jpg:/tmp/amiya-out.jpg
     build:
       context: .
       dockerfile: WorkerApi/Dockerfile

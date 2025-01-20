@@ -2,6 +2,7 @@
 using WorkerApi.Exceptions;
 using WorkerApi.Models.Graph;
 using WorkerApi.Services;
+using WorkerApi.Utils;
 
 namespace WorkerApi.Models.Filters
 {
@@ -12,6 +13,7 @@ namespace WorkerApi.Models.Filters
 
         private readonly string? _fromOutName;
         private readonly string? _toOutName;
+        private readonly string? _toJpgName;
 
 
 
@@ -21,24 +23,37 @@ namespace WorkerApi.Models.Filters
 
         public override string[] InStreams { get { return _out.InStreams; } }
 
+        private readonly uint _minScore;
+
+        private readonly string _outputFile;
 
         public override object[] GetFilterParams()
         {
-            return _out.GetFilterParams();
+            return _out.GetFilterParams().Concat([
+                KeyValuePair.Create("min_score", _minScore)
+            ]).ToArray();
         }
 
         public void AddOutput(int i, VideoCommand cmd)
         {
-            if (_fromOutName != null)
+            if (_toJpgName != null)
             {
-                cmd.Args.Add("");
+                cmd.Args.Add("-map");
+                cmd.Args.Add($"[{_toJpgName}]");
+                cmd.Args.Add($"-update");
+                cmd.Args.Add($"1");
+                cmd.Args.Add($"1");
             }
             _out.AddOutput(i, cmd);
         }
 
         public void AddInput(int idx, VideoCommand cmd)
         {
-            throw new NotImplementedException();
+            if(_fromOutName != null)
+            {
+                cmd.Args.Add("-i");
+                cmd.Args.Add($"http://localhost:8080/api/Detection/{ConversionUtils.ToStringInvariant(_minScore)}");
+            }
         }
 
         public override string ComputeFilterComplexOutput()
@@ -51,8 +66,12 @@ namespace WorkerApi.Models.Filters
             if (!item.Type.Equals(FilterName)) throw new FilterException("Filter name is not matching");
             if (item.In.Count != 2) throw new FilterException("Need 2 inputs in OutFilter: [{video}, {audio}]");
             var outVideo = item.In[0];
+            item.Properties.TryGetValue("min_score", out object minScoreObj);
+            var minScore = ConversionUtils.EnsureInt(minScoreObj);
+            _minScore = (uint)(minScore > 0 ? minScore : 100);
             _fromOutName = outVideo == null ? null : outVideo + ":4";
             _toOutName = outVideo == null ? null : outVideo + ":5";
+            _toJpgName = outVideo == null ? null : outVideo + ":6";
             _out = new OutFilter(key, new FilterGraphItem { In = {_toOutName, item.In[1] }, Out = item.Out, Type = "_OUT", Properties = item.Properties });
         }
     }

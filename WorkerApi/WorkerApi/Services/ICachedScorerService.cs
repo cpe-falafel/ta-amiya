@@ -5,5 +5,7 @@ namespace WorkerApi.Services
     public interface ICachedScorerService
     {
         public uint GetCachedScore();
+
+        public Task ComputeScore();
     }
 }

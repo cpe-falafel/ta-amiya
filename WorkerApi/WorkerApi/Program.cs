@@ -20,6 +20,8 @@ builder.Services.AddTransient<FfmpegRunnerService>();
 builder.Services.AddTransient<IProcessFactory, ProcessFactory>();
 builder.Services.AddTransient<IProcessWrapper, ProcessWrapper>();
 
+builder.Services.AddHostedService<TimedScoreService>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -26,12 +26,13 @@ namespace WorkerApi.Services
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
             };
 
             _ffmpegProcess = _processFactory.CreateProcess();
             _ffmpegProcess.StartInfo = startInfo;
             _ffmpegProcess.EnableRaisingEvents = true;
+
 
             // Gestions des sorties standard et d'erreur
             _ffmpegProcess.OutputDataReceived += (sender, e) => _logger.LogInformation($"[Ffmpeg Output] {e.Data}");

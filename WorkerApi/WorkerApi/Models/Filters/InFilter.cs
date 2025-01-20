@@ -49,8 +49,6 @@ namespace WorkerApi.Models.Filters
 
         public void AddInput(int idx, VideoCommand cmd)
         {
-            var inEnvName = "AMIYA_IN_" + idx.ToString();
-
             cmd.Args.Add("-i");
             cmd.Args.Add(_src);
 
