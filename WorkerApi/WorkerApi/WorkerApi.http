@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:62868
+@WorkerApi_HostAddress = https://localhost:64294
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -31,3 +31,7 @@ POST {{WorkerApi_HostAddress}}/worker/stop
 Accept: application/json
 Content-Type: application/json
 {}
+
+
+### WorkerStatus
+GET {{WorkerApi_HostAddress}}/worker/status

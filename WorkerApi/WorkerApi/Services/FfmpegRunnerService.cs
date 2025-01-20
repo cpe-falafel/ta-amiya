@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using WorkerApi.Services.Process;
 using System.Text.Json;
+using WorkerApi.Models.DTO;
 
 namespace WorkerApi.Services
 {
@@ -24,7 +25,7 @@ namespace WorkerApi.Services
             _logger.LogInformation($"FFmpeg process ID {pid} saved to file {_pidFilePath}");
         }
 
-        private async Task<int?> LoadProcessListAsync()
+        private async Task<int?> LoadProcessIdAsync()
         {
             if (!File.Exists(_pidFilePath))
             {
@@ -87,7 +88,7 @@ namespace WorkerApi.Services
 
         public async Task StopExistingProcessAsync()
         {
-            var pid = await LoadProcessListAsync();
+            var pid = await LoadProcessIdAsync();
             if (pid.HasValue)
             {
                 try
@@ -129,6 +130,30 @@ namespace WorkerApi.Services
                     _logger.LogError(ex, $"Error stopping FFmpeg process {process.Id} : {ex.Message}");
                 }
             }
+        }
+
+        public async Task<WorkerStatusDto> GetStatusAsync()
+        {
+            var pid = await LoadProcessIdAsync();
+            if (!pid.HasValue)
+            {
+                return new WorkerStatusDto { Status = "Stopped" };
+            }
+
+            try
+            {
+                var process = System.Diagnostics.Process.GetProcessById(pid.Value);
+                if (process.ProcessName.ToLower() == "ffmpeg" && !process.HasExited)
+                {
+                    return new WorkerStatusDto { Status = "running" };
+                }
+            }
+            catch (Exception ex)
+            {
+                await ClearProcessIdAsync();
+            }
+
+            return new WorkerStatusDto { Status = "Stopped" };
         }
     }
 }

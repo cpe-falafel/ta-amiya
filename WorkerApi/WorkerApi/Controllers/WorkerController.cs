@@ -58,5 +58,19 @@ namespace WorkerApi.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
+
+        [HttpGet("status")]
+        public async Task<ActionResult<WorkerStatusDto>> GetStatus()
+        {
+            try
+            {
+                var status = await _ffmpegRunnerService.GetStatusAsync();
+                return Ok(status);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
     }
 }
