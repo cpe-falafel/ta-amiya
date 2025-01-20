@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using WorkerApi.Exceptions;
 using WorkerApi.Models.Graph;
 using WorkerApi.Services;
@@ -11,9 +12,9 @@ namespace WorkerApi.Models.Filters
 
         private readonly OutFilter _out;
 
-        private readonly string? _fromOutName;
         private readonly string? _toOutName;
         private readonly string? _toJpgName;
+        private int? _inPipeIdx;
 
 
 
@@ -49,22 +50,28 @@ namespace WorkerApi.Models.Filters
 
         public void AddInput(int idx, VideoCommand cmd)
         {
-            if(_fromOutName != null)
+            if(_toJpgName != null)
             {
+                _inPipeIdx = idx;
+                cmd.Args.Add("-f");
+                cmd.Args.Add("image2pipe");
                 cmd.Args.Add("-i");
-                cmd.Args.Add($"http://localhost:8080/api/Detection/{ConversionUtils.ToStringInvariant(_minScore)}");
+                cmd.Args.Add("-");
+                cmd.Args.Add("-vcodec");
+                cmd.Args.Add("libx264");
             }
         }
 
         public override string ComputeFilterComplexOutput()
         {
-            if (_fromOutName == null || _toOutName == null || _toJpgName == null) return "";
+            if (_toOutName == null || _toJpgName == null || _inPipeIdx == null) return "";
             var outVideo = this.InStreams[0];
-            var outJpgFilter = "fps=1/10,crop=min(iw\\,ih):min(iw\\,ih):(iw-min(iw\\,ih))/2:(ih-min(iw\\,ih))/2,scale=256:256";
+            var outJpgFilterNoInput = "fps=1/10,crop=min(iw\\,ih):min(iw\\,ih):(iw-min(iw\\,ih))/2:(ih-min(iw\\,ih))/2,scale=256:256";
 
-            //TODO: overlay using fromOutName
-            var overlayFilter = "null";
-            return $"[{outVideo}]split[{outVideo}:0],{outJpgFilter}[{_toJpgName}];[{outVideo}:0]{overlayFilter}[{_toOutName}]";
+            var overlayFilter = $"[{_inPipeIdx}][{outVideo}:1]scale=rw:rh[{outVideo}:2];[{outVideo}:0][{outVideo}:2]overlay";
+            return $"[{outVideo}]split=3[{outVideo}:0][{outVideo}:1],"+
+                $"{outJpgFilterNoInput}[{_toJpgName}];"+
+                $"{overlayFilter}[{_toOutName}]";
         }
 
         public WrappedWithCheckOutFilter(string key, FilterGraphItem item): base(key)
@@ -75,9 +82,8 @@ namespace WorkerApi.Models.Filters
             item.Properties.TryGetValue("min_score", out object minScoreObj);
             var minScore = ConversionUtils.EnsureInt(minScoreObj);
             _minScore = (uint)(minScore > 0 ? minScore : 100);
-            _fromOutName = outVideo == null ? null : outVideo + ":1";
-            _toOutName = outVideo == null ? null : outVideo + ":2";
-            _toJpgName = outVideo == null ? null : outVideo + ":3";
+            _toOutName = outVideo == null ? null : outVideo + ":3";
+            _toJpgName = outVideo == null ? null : outVideo + ":4";
             _out = new OutFilter(key, new FilterGraphItem { In = {_toOutName, item.In[1] }, Out = item.Out, Type = "_OUT", Properties = item.Properties });
         }
     }
