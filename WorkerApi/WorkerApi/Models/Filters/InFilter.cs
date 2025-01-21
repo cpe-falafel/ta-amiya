@@ -5,7 +5,7 @@ using WorkerApi.Services;
 
 namespace WorkerApi.Models.Filters
 {
-    public class InFilter : AbstractFilterComplexVertex
+    public class InFilter : AbstractFilterComplexVertex, IInFilter
     {
 
         public override string FilterName => "_IN";
@@ -49,8 +49,6 @@ namespace WorkerApi.Models.Filters
 
         public void AddInput(int idx, VideoCommand cmd)
         {
-            var inEnvName = "AMIYA_IN_" + idx.ToString();
-
             cmd.Args.Add("-i");
             cmd.Args.Add(_src);
 

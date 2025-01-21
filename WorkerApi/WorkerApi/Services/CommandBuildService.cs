@@ -18,11 +18,6 @@ namespace WorkerApi.Services
             _loggerFactory = loggerFactory;
         }
 
-        private List<T> CastWhere<T>(List<FilterVertex> vertices) where T : FilterVertex
-        {
-            return vertices.Where(v => v is T).Select(v => (T)v).ToList();
-        }
-
         public VideoCommand BuildCommand(string jsonWorkerConfiguration)
         {
             try
@@ -48,7 +43,7 @@ namespace WorkerApi.Services
         private void AddFilters(VideoCommand cmd, BidirectionalGraph<FilterVertex, StreamEdge> graph)
         {
             IFilterComplexBuilder filterComplexBuilder = new FilterComplexBuilder(_loggerFactory.CreateLogger<FilterComplexBuilder>());
-            var filterComplexes = CastWhere<AbstractFilterComplexVertex>(graph.Vertices.ToList());
+            var filterComplexes = graph.Vertices.OfType<AbstractFilterComplexVertex>();
             foreach (var filter in filterComplexes)
             {
                 filterComplexBuilder.AddFilter(filter);
@@ -60,7 +55,7 @@ namespace WorkerApi.Services
         private void AddInputs(VideoCommand cmd, BidirectionalGraph<FilterVertex, StreamEdge> graph)
         {
             int inCount = 0;
-            foreach (var inputNode in CastWhere<InFilter>(graph.Vertices.ToList()))
+            foreach (var inputNode in graph.Vertices.OfType<IInFilter>())
             {
                 inputNode.AddInput(inCount, cmd);
                 inCount++;
@@ -70,7 +65,7 @@ namespace WorkerApi.Services
         private void AddOutputs(VideoCommand cmd, BidirectionalGraph<FilterVertex, StreamEdge> graph)
         {
             int outCount = 0;
-            foreach (var inputNode in CastWhere<OutFilter>(graph.Vertices.ToList()))
+            foreach (var inputNode in graph.Vertices.OfType<IOutFilter>())
             {
                 inputNode.AddOutput(outCount, cmd);
                 outCount++;
