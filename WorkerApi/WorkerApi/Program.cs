@@ -22,7 +22,6 @@ builder.Services.AddTransient<IProcessFactory, ProcessFactory>();
 builder.Services.AddTransient<IProcessWrapper, ProcessWrapper>();
 builder.Services.AddTransient<IZmqCommandService, ZmqCommandService>();
 
-builder.Services.AddHostedService<TimedScoreService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -31,6 +30,8 @@ builder.Services.AddSwaggerGen();
 
 var runtime = new NetMQRuntime();
 runtime.Run();
+
+builder.Services.AddHostedService<TimedScoreService>();
 
 var app = builder.Build();
 
