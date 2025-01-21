@@ -7,6 +7,8 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
+#for test
+
 # Installation ffmpeg
 USER root
 # Allow unstable to get FFMPEG version 7.1

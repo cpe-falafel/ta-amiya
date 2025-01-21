@@ -44,7 +44,9 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "AMIYA_API": "http://01.ai.falafel.stream:5000/eval",
+        "AMIYA_OUTJPG": "/tmp/amiya-out.jpg"
       },
       "publishAllPorts": true,
       "useSSL": true,

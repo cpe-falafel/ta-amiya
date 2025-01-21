@@ -100,8 +100,8 @@ namespace WorkerApi.Services
     public class FilterGraphItem
     {
         public string Type { get; set; }
-        public List<string> In { get; set; }
-        public List<string> Out { get; set; }
+        public List<string?> In { get; set; }
+        public List<string?> Out { get; set; }
         public Dictionary<string, object> Properties { get; set; }
     }
 

@@ -11,8 +11,11 @@ namespace WorkerApi.Controllers
     {
         private readonly ICommandBuildService _commandBuildService;
         private readonly FfmpegRunnerService _ffmpegRunnerService;
-        public WorkerController(ICommandBuildService commandBuildService, FfmpegRunnerService ffmpegRunnerService)
+        private readonly ICachedScorerService _cachedScorerService;
+
+        public WorkerController(ICommandBuildService commandBuildService, FfmpegRunnerService ffmpegRunnerService, ICachedScorerService cachedScorerService)
         {
+            _cachedScorerService = cachedScorerService;
             _commandBuildService = commandBuildService;
             _ffmpegRunnerService = ffmpegRunnerService;
         }
@@ -34,6 +37,7 @@ namespace WorkerApi.Controllers
                 // run ffmpeg command :
                 if (command != null && command.Args.Count > 0)
                 {
+                    _cachedScorerService.SetMinScore(command.MinScore);
                     Task _ = _ffmpegRunnerService.RunFfmpegCommandAsync(command);
                 }
 
@@ -52,6 +56,20 @@ namespace WorkerApi.Controllers
             {
                 _ffmpegRunnerService.StopAllFfmpegProcesses();
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        [HttpGet("status")]
+        public async Task<ActionResult<WorkerStatusDto>> GetStatus()
+        {
+            try
+            {
+                var status = await _ffmpegRunnerService.GetStatusAsync();
+                return Ok(status);
             }
             catch (Exception ex)
             {

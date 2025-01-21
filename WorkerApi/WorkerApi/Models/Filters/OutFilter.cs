@@ -5,7 +5,7 @@ using WorkerApi.Services;
 
 namespace WorkerApi.Models.Filters
 {
-    public class OutFilter : FilterVertex
+    public class OutFilter : FilterVertex, IOutFilter
     {
 
         public override string FilterName => "_OUT";
