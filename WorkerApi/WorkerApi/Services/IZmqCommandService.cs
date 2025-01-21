@@ -2,6 +2,6 @@
 {
     public interface IZmqCommandService
     {
-        Task SendCommandAsync(bool applyBlur);
+        void SendCommand(bool applyBlur);
     }
 }

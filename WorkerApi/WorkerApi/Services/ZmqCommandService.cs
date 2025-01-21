@@ -14,28 +14,18 @@ namespace WorkerApi.Services
             _zmqServerAddress = zmqServerAddress;
         }
 
-        private async void Send(string msg)
+        private void Send(string msg)
         {
             using (var client = new RequestSocket())
             {
                 client.Connect(_zmqServerAddress);
                 client.SendFrame(msg);
-                using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
-                {
-                    try
-                    {
-                        var response = await client.ReceiveFrameStringAsync(cts.Token);
-                        _logger.LogInformation("FFMPEG sent: ", response.ToString());
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        _logger.LogWarning("Aucune réponse de FFMPEG");
-                    }
-                }
+                client.TryReceiveFrameString(TimeSpan.FromSeconds(3) , out string response);
+                _logger.LogInformation("FFMPEG sent: " + response);
             }
         }
 
-        public async Task SendCommandAsync(bool applyBlur)
+        public void SendCommand(bool applyBlur)
         {
             try
             {

@@ -13,15 +13,11 @@ namespace WorkerApi.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+            while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                try
-                {
-                    await _scorer.ComputeScore();
-                    _ = _zmqService.SendCommandAsync(_scorer.GetCachedScore() > _scorer.GetCachedMinScore());
-                }
-                catch (Exception ex) { }
-                await Task.Delay(TimeSpan.FromSeconds(20), stoppingToken);
+                await _scorer.ComputeScore();
+                _zmqService.SendCommand(_scorer.GetCachedScore() > _scorer.GetCachedMinScore());
             }
         }
     }
