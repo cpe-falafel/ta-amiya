@@ -29,7 +29,7 @@ namespace WorkerApi.Models.Filters
         {
             return [
                 KeyValuePair.Create("y", _y),
-                KeyValuePair.Create("fontSize", _fontSize),
+                KeyValuePair.Create("font_size", _fontSize),
                 KeyValuePair.Create("color", _color),
                 KeyValuePair.Create("align", _align),
                 KeyValuePair.Create("text", _text)

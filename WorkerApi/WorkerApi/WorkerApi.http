@@ -1,4 +1,4 @@
-@WorkerApi_HostAddress = https://localhost:61090
+@WorkerApi_HostAddress = https://localhost:59427
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -16,7 +16,9 @@ Content-Type: application/json
 POST {{WorkerApi_HostAddress}}/worker/
 Accept: application/json
 Content-Type: application/json
-{"1":{"type":"_IN","properties":{"src":""},"in":[],"out":["e1-3",null]},"2":{"type":"_OUT","properties":{"dst":""},"in":["e3-2",null],"out":[]},"3":{"type":"drawbox","properties":{"color":"#000000","top":0,"bottom":0,"left":0,"right":0,"thickness":1},"in":["e1-3"],"out":["e3-2"]}}
+{"jsonWorkerConfiguration":
+"{"1":{"type":"_IN","properties":{"_label":"Entrée","src":"rtmp://89.168.40.140:1935/live1/test"},"in":[],"out":["e1-3","vueflowedge-1source-1-a1-2target-2-a1"]},"2":{"type":"_OUT","properties":{"_label":"Sortie","dst":"rtmp://89.168.40.140:1935/live2/test"},"in":["vueflowedge-1737469701307source-1737469701307-v1-2target-2-v1","vueflowedge-1source-1-a1-2target-2-a1"],"out":[]},"3":{"type":"drawbox","properties":{"_label":"Ajout Cadre","color":"#1cff33","top":0,"bottom":0,"left":0,"right":0,"thickness":15},"in":["e1-3"],"out":["vueflowedge-3source-3-v1-1737469697662target-1737469697662-v1"]},"1737469697662":{"type":"zoom","properties":{"_label":"Zoom-1737469697662","zx":0,"zy":0,"zh":1,"zw":5},"in":["vueflowedge-3source-3-v1-1737469697662target-1737469697662-v1"],"out":["vueflowedge-1737469697662source-1737469697662-v1-1737469701307target-1737469701307-v1"]},"1737469701307":{"type":"drawtext","properties":{"_label":"Drawtext-1737469701307","y":0.5,"align":"Center","color":"#d90000","fontSize":100,"text":"Saucisse","font_size":100},"in":["vueflowedge-1737469697662source-1737469697662-v1-1737469701307target-1737469701307-v1"],"out":["vueflowedge-1737469701307source-1737469701307-v1-2target-2-v1"]}}",
+}
 
 ### StopWorker
 POST {{WorkerApi_HostAddress}}/worker/stop

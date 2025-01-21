@@ -39,7 +39,7 @@ namespace WorkerApi.Utils
 
         public static string? EnsureColor(object? o)
         {
-            string? color = Convert.ToString(o, CultureInfo.InvariantCulture);
+            string? color = Convert.ToString(o, CultureInfo.InvariantCulture).ToUpper();
             return color== null ? null: (Regex.IsMatch(color, @"^#([A-F0-9]+)$") ? color : null);
         }
 
