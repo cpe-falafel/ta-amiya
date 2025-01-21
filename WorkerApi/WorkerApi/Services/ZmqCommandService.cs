@@ -7,17 +7,35 @@ namespace WorkerApi.Services
     {
         private readonly string _zmqServerAddress;
         private readonly ILogger<ZmqCommandService> _logger;
-        private readonly RequestSocket _socket;
 
         public ZmqCommandService(ILogger<ZmqCommandService> logger, string zmqServerAddress = "tcp://localhost:5555")
         {
             _logger = logger;
             _zmqServerAddress = zmqServerAddress;
-            _socket = new RequestSocket();
-            _socket.Connect(_zmqServerAddress); 
         }
 
-        public async Task<string> SendCommandAsync(bool applyBlur)
+        private async void Send(string msg)
+        {
+            using (var client = new RequestSocket())
+            {
+                client.Connect(_zmqServerAddress);
+                client.SendFrame(msg);
+                using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
+                {
+                    try
+                    {
+                        var response = await client.ReceiveFrameStringAsync(cts.Token);
+                        _logger.LogInformation("FFMPEG sent: ", response.ToString());
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        _logger.LogWarning("Aucune réponse de FFMPEG");
+                    }
+                }
+            }
+        }
+
+        public async Task SendCommandAsync(bool applyBlur)
         {
             try
             {
@@ -25,18 +43,11 @@ namespace WorkerApi.Services
 
                 _logger.LogInformation($"Sending command: {command}");
 
-                await Task.Run(() => _socket.SendFrame(command));
-
-                var response = await Task.Run(() => _socket.ReceiveFrameString());
-
-                _logger.LogInformation($"Received response: {response}");
-
-                return response;
+                Send(command);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error sending command to ZMQ server");
-                return string.Empty;
             }
         }
     }

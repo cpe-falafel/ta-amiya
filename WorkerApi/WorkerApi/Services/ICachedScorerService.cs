@@ -7,5 +7,9 @@ namespace WorkerApi.Services
         public uint GetCachedScore();
 
         public Task ComputeScore();
+
+        public void SetMinScore(uint minScore);
+        public uint GetCachedMinScore();
+
     }
 }

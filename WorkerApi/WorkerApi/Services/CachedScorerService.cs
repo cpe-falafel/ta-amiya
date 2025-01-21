@@ -8,6 +8,7 @@ namespace WorkerApi.Services
     public class CachedScorerService: ICachedScorerService
     {
         private static string SCORE_KEY = "amiya_last_score";
+        private static string MIN_SCORE_KEY = "amiya_min_score";
 
         private readonly IMemoryCache _cache;
 
@@ -71,6 +72,7 @@ namespace WorkerApi.Services
             if (body == null) { return; }
             var jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(body);
             var scoreD = ConversionUtils.EnsureDouble(jsonDictionary.GetValueOrDefault("gore_score"));
+            _logger.LogInformation("Got score :" + scoreD.ToString());
             if (scoreD >= 0 && scoreD<= uint.MaxValue)
             {
                 _cache.Set(SCORE_KEY, ConversionUtils.ToStringInvariant((uint)scoreD));
@@ -89,12 +91,35 @@ namespace WorkerApi.Services
             }
             try
             {
-                return uint.Parse(cachedValue);
+                var score = ConversionUtils.EnsureInt(cachedValue);
+                return score >= 0 ? (uint)score : 0;
             }
             catch
             {
                 return 0;
             }
+        }
+
+        public uint GetCachedMinScore()
+        {
+            if (!_cache.TryGetValue(MIN_SCORE_KEY, out string? cachedValue) || cachedValue == null)
+            {
+                return 10; // By default: 10
+            }
+            try
+            {
+                var minScore = ConversionUtils.EnsureInt(cachedValue);
+                return minScore >= 0 ? (uint)minScore : 10;
+            }
+            catch
+            {
+                return 10;
+            }
+        }
+
+        public void SetMinScore(uint minScore)
+        {
+            _cache.Set(MIN_SCORE_KEY, ConversionUtils.ToStringInvariant(minScore));
         }
     }
 }

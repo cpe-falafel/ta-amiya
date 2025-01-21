@@ -1,6 +1,8 @@
 ﻿using WorkerApi.Models;
 using System.Diagnostics;
 using WorkerApi.Services.Process;
+using Serilog;
+using Serilog.Core;
 
 namespace WorkerApi.Services
 {
@@ -9,11 +11,19 @@ namespace WorkerApi.Services
         private IProcessWrapper _ffmpegProcess;
         private readonly ILogger<FfmpegRunnerService> _logger;
         private readonly IProcessFactory _processFactory;
+        private Logger _ffmpegLogger;
 
         public FfmpegRunnerService(ILogger<FfmpegRunnerService> logger, IProcessFactory processFactory)
         {
             _logger = logger;
             _processFactory = processFactory;
+
+            _ffmpegLogger = new LoggerConfiguration()
+            .MinimumLevel.Verbose()
+            .WriteTo.File(Path.Combine(Directory.GetCurrentDirectory(), "LogFiles", $"{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}", "FfmpegLog.txt"),
+                rollingInterval: RollingInterval.Infinite,
+                outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message}{NewLine}{Exception}")
+            .CreateLogger();
         }
 
         public async Task RunFfmpegCommandAsync(VideoCommand ffmpegCommand)
@@ -26,8 +36,10 @@ namespace WorkerApi.Services
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true,
+                CreateNoWindow = true
             };
+
+            _logger.LogInformation("SENDING FFMPEG CMD " + string.Join(' ', startInfo.ArgumentList));
 
             _ffmpegProcess = _processFactory.CreateProcess();
             _ffmpegProcess.StartInfo = startInfo;
@@ -35,8 +47,8 @@ namespace WorkerApi.Services
 
 
             // Gestions des sorties standard et d'erreur
-            _ffmpegProcess.OutputDataReceived += (sender, e) => _logger.LogInformation($"[Ffmpeg Output] {e.Data}");
-            _ffmpegProcess.ErrorDataReceived += (sender, e) => _logger.LogError($"[Ffmpeg Error] {e.Data}");
+            _ffmpegProcess.OutputDataReceived += (sender, e) => _ffmpegLogger.Information("{@msg}", e.Data);
+            _ffmpegProcess.ErrorDataReceived += (sender, e) => _ffmpegLogger.Error("{@msg}", e.Data);
 
             try
             {

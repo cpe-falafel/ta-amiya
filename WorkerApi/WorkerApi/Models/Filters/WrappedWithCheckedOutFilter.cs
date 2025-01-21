@@ -29,7 +29,7 @@ namespace WorkerApi.Models.Filters
         public override string[] OutStreams { get { return _out.OutStreams; } }
 
         public override string[] InStreams { get; }
-        private readonly uint _minScore;
+        private readonly uint? _minScore;
 
         public override object[] GetFilterParams()
         {
@@ -40,12 +40,14 @@ namespace WorkerApi.Models.Filters
 
         public void AddOutput(int i, VideoCommand cmd)
         {
+            if (_minScore.HasValue) cmd.MinScore = _minScore.Value;
             if (_options != null)
             {
                 cmd.Args.Add("-map");
                 cmd.Args.Add($"[{_options.ToJpgName}]");
                 cmd.Args.Add($"-update");
                 cmd.Args.Add($"1");
+                cmd.Args.Add($"-y");
                 cmd.Args.Add(_options.JpgPath);
             }
             _out.AddOutput(i, cmd);
@@ -76,7 +78,7 @@ namespace WorkerApi.Models.Filters
             }
             item.Properties.TryGetValue("min_score", out object? minScoreObj);
             var minScore = ConversionUtils.EnsureInt(minScoreObj ?? 50);
-            _minScore = (uint)(minScore > 0 ? minScore : 100);
+            _minScore = minScore > 0 ? (uint)minScore : null;
             _out = new OutFilter(key, new FilterGraphItem { 
                 In = new List<string?>([_options?.ToOutName, item.In[1]]),
                 Out = item.Out, 

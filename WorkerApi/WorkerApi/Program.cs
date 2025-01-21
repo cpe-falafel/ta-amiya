@@ -1,3 +1,4 @@
+using NetMQ;
 using QuickGraph.Algorithms.Services;
 using WorkerApi.Services;
 using WorkerApi.Services.Process;
@@ -27,6 +28,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var runtime = new NetMQRuntime();
+runtime.Run();
 
 var app = builder.Build();
 

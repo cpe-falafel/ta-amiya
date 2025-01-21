@@ -6,8 +6,6 @@ USER app
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
-COPY ./WorkerApi/Resources /app/Resources
-ENV AMIYA_PNGS_DIR=/app/Resources
 
 #for test
 
