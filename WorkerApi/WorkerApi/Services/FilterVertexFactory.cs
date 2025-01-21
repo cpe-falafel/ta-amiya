@@ -26,6 +26,8 @@ namespace WorkerApi.Services
                     return new InFilter(key, item);
                 case "_OUT":
                     return new OutFilter(key, item);
+                case "_CHECKED_OUT":
+                    return new WrappedWithCheckOutFilter(key, item);
                 default:
                     return null;
             }

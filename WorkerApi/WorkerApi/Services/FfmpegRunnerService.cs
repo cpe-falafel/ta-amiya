@@ -62,7 +62,7 @@ namespace WorkerApi.Services
                 try
                 {
                     process.Kill();
-                    process.Dispose();
+                    process.WaitForExitAsync();
                     _logger.LogInformation($"FFmpeg process {process.Id} stopped");
                 }
                 catch (Exception ex)
