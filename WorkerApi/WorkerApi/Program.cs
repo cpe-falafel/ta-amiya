@@ -19,6 +19,7 @@ builder.Services.AddTransient<ICommandBuildService, CommandBuildService>();
 builder.Services.AddTransient<FfmpegRunnerService>();
 builder.Services.AddTransient<IProcessFactory, ProcessFactory>();
 builder.Services.AddTransient<IProcessWrapper, ProcessWrapper>();
+builder.Services.AddTransient<IZmqCommandService, ZmqCommandService>();
 
 builder.Services.AddHostedService<TimedScoreService>();
 
