@@ -17,6 +17,7 @@ services:
     environment:
       AMIYA_API: http://01.ai.falafel.stream:5000/eval
       AMIYA_OUTJPG: /tmp/amiya-out.jpg
+      AMIYA_APIKEY: apiKey0123
     build:
       context: .
       dockerfile: WorkerApi/Dockerfile

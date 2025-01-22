@@ -1,4 +1,5 @@
-@WorkerApi_HostAddress = https://localhost:54704
+@WorkerApi_HostAddress = https://localhost:58939
+@token = apiKey0123
 
 GET {{WorkerApi_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -14,6 +15,7 @@ Content-Type: application/json
 
 ### Drawbox filter
 POST {{WorkerApi_HostAddress}}/worker/
+X-Api-Key: {{token}}
 Accept: application/json
 Content-Type: application/json
 {
@@ -30,6 +32,7 @@ Content-Type: application/json
 
 ### StopWorker
 POST {{WorkerApi_HostAddress}}/worker/stop
+X-Api-Key: {{token}}
 Accept: application/json
 Content-Type: application/json
 {}

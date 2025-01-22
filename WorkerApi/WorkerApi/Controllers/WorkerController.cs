@@ -12,12 +12,14 @@ namespace WorkerApi.Controllers
         private readonly ICommandBuildService _commandBuildService;
         private readonly FfmpegRunnerService _ffmpegRunnerService;
         private readonly ICachedScorerService _cachedScorerService;
+        private readonly IApiKeyValidatorService _apiKeyValidatorService;
 
-        public WorkerController(ICommandBuildService commandBuildService, FfmpegRunnerService ffmpegRunnerService, ICachedScorerService cachedScorerService)
+        public WorkerController(ICommandBuildService commandBuildService, FfmpegRunnerService ffmpegRunnerService, ICachedScorerService cachedScorerService, IApiKeyValidatorService apiKeyValidatorService)
         {
             _cachedScorerService = cachedScorerService;
             _commandBuildService = commandBuildService;
             _ffmpegRunnerService = ffmpegRunnerService;
+            _apiKeyValidatorService = apiKeyValidatorService;
         }
 
         [HttpGet]
@@ -31,10 +33,13 @@ namespace WorkerApi.Controllers
         {
             try
             {
-                var command = _commandBuildService.BuildCommand(updateWorkerConfigurationDto.JsonWorkerConfiguration);
-                //var commandTest = "ffmpeg -i rtmp://localhost:1935/live/test -c copy -f flv rtmp://localhost:1935/input/test\r\n";
+                if (!Request.Headers.TryGetValue("X-Api-Key", out var apiKeyHeader) || !_apiKeyValidatorService.IsValid(apiKeyHeader))
+                {
+                    return Unauthorized(new { error = "Invalid or missing token" });
+                }
 
-                // run ffmpeg command :
+                var command = _commandBuildService.BuildCommand(updateWorkerConfigurationDto.JsonWorkerConfiguration);
+
                 if (command != null && command.Args.Count > 0)
                 {
                     _cachedScorerService.SetMinScore(command.MinScore);
@@ -54,6 +59,11 @@ namespace WorkerApi.Controllers
         {
             try
             {
+                if (!Request.Headers.TryGetValue("X-Api-Key", out var apiKeyHeader) || !_apiKeyValidatorService.IsValid(apiKeyHeader))
+                {
+                    return Unauthorized(new { error = "Invalid or missing token" });
+                }
+
                 _ffmpegRunnerService.StopAllFfmpegProcesses();
                 return Ok();
             }

@@ -21,6 +21,7 @@ builder.Services.AddTransient<FfmpegRunnerService>();
 builder.Services.AddTransient<IProcessFactory, ProcessFactory>();
 builder.Services.AddTransient<IProcessWrapper, ProcessWrapper>();
 builder.Services.AddTransient<IZmqCommandService, ZmqCommandService>();
+builder.Services.AddTransient<IApiKeyValidatorService, ApiKeyValidatorService>();
 
 
 builder.Services.AddControllers();
