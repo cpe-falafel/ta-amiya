@@ -23,11 +23,25 @@ builder.Services.AddTransient<IProcessWrapper, ProcessWrapper>();
 builder.Services.AddTransient<IZmqCommandService, ZmqCommandService>();
 builder.Services.AddTransient<IApiKeyValidatorService, ApiKeyValidatorService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+
+
 
 var runtime = new NetMQRuntime();
 runtime.Run();
@@ -43,9 +57,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 //app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 

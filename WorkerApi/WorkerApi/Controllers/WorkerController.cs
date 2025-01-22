@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WorkerApi.Models.DTO;
 using WorkerApi.Services;
@@ -74,6 +75,7 @@ namespace WorkerApi.Controllers
         }
 
         [HttpGet("status")]
+        [EnableCors("AllowAll")]
         public async Task<ActionResult<WorkerStatusDto>> GetStatus()
         {
             try
