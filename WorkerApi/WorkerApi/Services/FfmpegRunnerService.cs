@@ -5,6 +5,8 @@ using Serilog;
 using Serilog.Core;
 using System.Text.Json;
 using WorkerApi.Models.DTO;
+using static NetMQ.NetMQSelector;
+using System.Security.Cryptography;
 
 namespace WorkerApi.Services
 {
@@ -29,36 +31,24 @@ namespace WorkerApi.Services
             .CreateLogger();
         }
 
-        private async Task SaveProcessIdAsync(int pid)
-        {
-            await File.WriteAllTextAsync(_pidFilePath, pid.ToString());
-            _logger.LogInformation($"FFmpeg process ID {pid} saved to file {_pidFilePath}");
-        }
-
-        private async Task<int?> LoadProcessIdAsync()
-        {
-            if (!File.Exists(_pidFilePath))
-            {
-                return null;
-            }
-
-            var content = await File.ReadAllTextAsync(_pidFilePath);
-            return int.TryParse(content, out int pid) ? pid : null;
-        }
-
-        private async Task ClearProcessIdAsync()
-        {
-            if (File.Exists(_pidFilePath))
-            {
-                File.Delete(_pidFilePath);
-                _logger.LogInformation($"FFmpeg process ID file {_pidFilePath} deleted");
-            }
-        }
-
         public async Task RunFfmpegCommandAsync(VideoCommand ffmpegCommand)
         {
             // Vérification si un processus FFmpeg est déjà en cours et le stopper si c'est le cas
-            await StopExistingProcessAsync();
+
+            try
+            {
+                bool stopped = await StopExistingProcessAsync();
+
+                if (!stopped)
+                {
+                    _logger.LogWarning("Ffmeg could not stop process with register pid");
+                    StopAllFfmpegProcesses();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error stopping existing FFmpeg process");
+            }
 
             ProcessStartInfo startInfo = new ProcessStartInfo("ffmpeg", ffmpegCommand.Args)
             {
@@ -90,29 +80,71 @@ namespace WorkerApi.Services
                 _logger.LogInformation("FFmpeg process started");
 
                 await _ffmpegProcess.WaitForExitAsync();
-                await ClearProcessIdAsync();
+                ClearProcessId();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error running FFmpeg command");
-                await ClearProcessIdAsync();
+                ClearProcessId();
             }
         }
 
-        public async Task StopExistingProcessAsync()
+        private async Task SaveProcessIdAsync(int pid)
+        {
+            await File.WriteAllTextAsync(_pidFilePath, pid.ToString());
+            _logger.LogInformation($"FFmpeg process ID {pid} saved to file {_pidFilePath}");
+        }
+
+        private async Task<int?> LoadProcessIdAsync()
+        {
+            if (!File.Exists(_pidFilePath))
+            {
+                return null;
+            }
+
+            var content = await File.ReadAllTextAsync(_pidFilePath);
+            return int.TryParse(content, out int pid) ? pid : null;
+        }
+
+        private void ClearProcessId()
+        {
+            if (File.Exists(_pidFilePath))
+            {
+                File.Delete(_pidFilePath);
+                _logger.LogInformation($"FFmpeg process ID file {_pidFilePath} deleted");
+            }
+        }
+
+        public async Task<bool> StopExistingProcessAsync()
         {
             var pid = await LoadProcessIdAsync();
-            if (pid.HasValue)
+
+            if (!pid.HasValue)
+            {
+                _logger.LogInformation("No FFmpeg process ID found to stop.");
+                return false; // Aucun processus à arrêter
+            }
+
+            var process = pid.HasValue ? GetProcessById(pid.Value) : null;
+
+            if (process != null)
             {
                 try
                 {
-                    var process = System.Diagnostics.Process.GetProcessById(pid.Value);
                     if (process.ProcessName.ToLower() == "ffmpeg")
                     {
                         process.Kill();
-                        process.Dispose();
-                        _logger.LogInformation($"FFmpeg process {pid.Value} stopped");
 
+                        if (process.WaitForExit(TimeSpan.FromSeconds(20)))
+                        {
+                            _logger.LogInformation($"FFmpeg process {pid.Value} stopped");
+                        }
+                        else
+                        {
+                            _logger.LogWarning($"FFmpeg process {pid.Value} did not exit within the timeout period");
+                        }
+
+                        process.Dispose();
                     }
                 }
                 catch (Exception ex)
@@ -121,9 +153,10 @@ namespace WorkerApi.Services
                 }
                 finally
                 {
-                    await ClearProcessIdAsync();
+                    ClearProcessId();
                 }
             }
+            return GetProcessById(pid.Value) == null;
         }
 
         public void StopAllFfmpegProcesses()
@@ -135,8 +168,17 @@ namespace WorkerApi.Services
                 try
                 {
                     process.Kill();
-                    process.WaitForExitAsync();
-                    _logger.LogInformation($"FFmpeg process {process.Id} stopped");
+
+                    if (process.WaitForExit(TimeSpan.FromSeconds(20)))
+                    {
+                        _logger.LogInformation($"FFmpeg process {process.Id} stopped");
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"FFmpeg process {process.Id} did not exit within the timeout period");
+                    }
+
+                    process.Dispose();
                 }
                 catch (Exception ex)
                 {
@@ -144,6 +186,17 @@ namespace WorkerApi.Services
                 }
             }
         }
+
+        private static System.Diagnostics.Process? GetProcessById(int processId)
+        {
+            try { 
+                return System.Diagnostics.Process.GetProcessById(processId);
+            } catch(ArgumentException)
+            {
+                return null;
+            }
+        }
+
 
         public async Task<WorkerStatusDto> GetStatusAsync()
         {
@@ -155,18 +208,19 @@ namespace WorkerApi.Services
 
             try
             {
-                var process = System.Diagnostics.Process.GetProcessById(pid.Value);
-                if (process.ProcessName.ToLower() == "ffmpeg" && !process.HasExited)
+                var process = GetProcessById(pid.Value);
+                if (process != null && process.ProcessName.ToLower() == "ffmpeg" && !process.HasExited)
                 {
                     return new WorkerStatusDto { Status = "running" };
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                await ClearProcessIdAsync();
+                ClearProcessId();
             }
 
             return new WorkerStatusDto { Status = "Stopped" };
         }
+
     }
 }
