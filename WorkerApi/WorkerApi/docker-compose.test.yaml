@@ -14,3 +14,5 @@ services:
     ports:
         - "8090:8080"
         - "8091:8081"
+    environment:
+      - AMIYA_APIKEY
