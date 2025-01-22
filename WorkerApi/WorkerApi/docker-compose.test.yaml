@@ -15,4 +15,6 @@ services:
         - "8090:8080"
         - "8091:8081"
     environment:
-      - AMIYA_APIKEY
+    - AMIYA_APIKEY=${AMIYA_APIKEY}
+    - AMIYA_API=http://01.ai.falafel.stream:5000/eval
+    - AMIYA_OUTJPG=/tmp/amiya-out.jpg
