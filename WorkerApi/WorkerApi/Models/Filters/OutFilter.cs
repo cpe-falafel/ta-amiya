@@ -2,6 +2,7 @@
 using WorkerApi.Exceptions;
 using WorkerApi.Models.Graph;
 using WorkerApi.Services;
+using WorkerApi.Utils;
 
 namespace WorkerApi.Models.Filters
 {
@@ -49,8 +50,12 @@ namespace WorkerApi.Models.Filters
         {
             if (!item.Type.Equals(FilterName)) throw new FilterException("Filter name is not matching");
             if (item.In.Count != 2) throw new FilterException("Need 2 inputs in OutFilter: [{video}, {audio}]");
+
+            var destination = item.Properties.GetValueOrDefault("dst", "").ToString();
+            if (!ProtocolUtils.IsRtmpProtocol(destination)) throw new FilterException("Destination must be an rtmp stream");
+
             InStreams = item.In.ToArray();
-            _dst = item.Properties.GetValueOrDefault("dst", "").ToString();
+            _dst = destination;
             _videoInName = InStreams[0];
             _audioInName = InStreams[1];
         }

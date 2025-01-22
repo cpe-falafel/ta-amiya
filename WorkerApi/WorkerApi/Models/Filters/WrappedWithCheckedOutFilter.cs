@@ -69,15 +69,19 @@ namespace WorkerApi.Models.Filters
         {
             if (!item.Type.Equals(FilterName)) throw new FilterException("Filter name is not matching");
             if (item.In.Count != 2) throw new FilterException("Need 2 inputs in OutFilter: [{video}, {audio}]");
+
             var outVideo = item.In[0];
             InStreams = item.In.ToArray();
             string? outJpg = Environment.GetEnvironmentVariable("AMIYA_OUTJPG");
+
             if (outVideo != null && outJpg != null)
             {
                 _options = new CheckedOutOption(outVideo, outJpg);
             }
+
             item.Properties.TryGetValue("min_score", out object? minScoreObj);
             var minScore = ConversionUtils.EnsureInt(minScoreObj ?? 50);
+
             _minScore = minScore > 0 ? (uint)minScore : null;
             _out = new OutFilter(key, new FilterGraphItem { 
                 In = new List<string?>([_options?.ToOutName, item.In[1]]),

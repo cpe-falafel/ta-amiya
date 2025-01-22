@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using Microsoft.VisualBasic;
+using System.Text;
 using WorkerApi.Exceptions;
 using WorkerApi.Models.Graph;
 using WorkerApi.Services;
+using WorkerApi.Utils;
 
 namespace WorkerApi.Models.Filters
 {
@@ -60,14 +62,18 @@ namespace WorkerApi.Models.Filters
             return BuildFilter(_lastIdx);
         }
 
-        public InFilter(string key, FilterGraphItem item): base(key) {
+        public InFilter(string key, FilterGraphItem item): base(key) 
+        {
             if (!item.Type.Equals(FilterName)) throw new FilterException("Filter name is not matching");
             if (item.Out.Count != 2) throw new FilterException("Need 2 out in InFilter: [{video}, {audio}]");
+
+            var src = item.Properties.GetValueOrDefault("src", "").ToString();
+            if (!ProtocolUtils.IsRtmpProtocol(src)) throw new FilterException("Input source must be an rtmp stream");
+
             OutStreams = item.Out.ToArray();
             _videoOutName = OutStreams[0];
             _audioOutName = OutStreams[1];
-
-            _src = item.Properties.GetValueOrDefault("src", "").ToString();
+            _src = src;
         }
     }
 }
